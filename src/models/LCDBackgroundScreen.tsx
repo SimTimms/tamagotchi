@@ -26,7 +26,13 @@ function LCDBackgroundScreen(props: {
 
   const materialArr: THREE.MeshBasicMaterial[] = [];
 
-  for (let i = 0; i < 3; i + 30) {}
+  for (let a = 0; a < 3; a += 30) {
+    materialArr.push(
+      new THREE.MeshBasicMaterial({
+        color: `hsl(${a}, ${saturation}%, ${lightness}%)`,
+      })
+    );
+  }
 
   useEffect(() => {
     setAnimFrame(0);
