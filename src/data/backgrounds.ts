@@ -1,6 +1,6 @@
 export const items = ["city"];
 
-export const city = (screenSize: [number, number]) => {
+export const city = () => {
   const frameArr: any[] = [
     [
       1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 7, 7, 1, 0, 0,

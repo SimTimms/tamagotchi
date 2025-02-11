@@ -1,4 +1,4 @@
-export function creatureAnimations(screenSize: any, age: number) {
+export function creatureAnimations(age: number) {
   const deadFrame1 = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],

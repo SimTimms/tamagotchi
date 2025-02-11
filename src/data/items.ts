@@ -178,8 +178,6 @@ export const pizza = (screenSize: number) => {
 };
 
 export const inject = (screenSize: number) => {
-  const blankRow = new Array(screenSize).fill(0);
-
   return [
     [
       [0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0],

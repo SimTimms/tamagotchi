@@ -28,7 +28,7 @@ function LCDCreatureScreen(props: {
       chatting,
       sick,
       dirty,
-    } = creatureAnimations(screenSize, age);
+    } = creatureAnimations(age);
 
     setAnimArray({
       sad: sad,

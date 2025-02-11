@@ -16,7 +16,7 @@ function LCDBackgroundScreen(props: {
   const blankRow = new Array(screenSize[0]).fill(0);
 
   const tamagotchiArray: { [key: string]: any[] } = {
-    city: city(screenSize),
+    city: city(),
   };
 
   const BoxGeometry = new THREE.BoxGeometry(1, 1, 1, 1);
