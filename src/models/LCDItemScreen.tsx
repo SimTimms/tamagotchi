@@ -34,7 +34,7 @@ function LCDItemScreen(props: {
     press: press(screenSize),
     back: back(screenSize),
     clean: clearPoop(screenSize),
-    inject: inject(screenSize),
+    inject: inject(),
   };
 
   const BoxGeometry = new THREE.BoxGeometry(1, 1, 1, 1);
