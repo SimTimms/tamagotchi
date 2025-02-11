@@ -352,6 +352,7 @@ function Scene(props: SceneProps) {
     <>
       <OrbitControls />
       <Stats />
+
       <LCDScreen
         currentAnim={currentAnim}
         currentItem={currentItem}
@@ -367,7 +368,7 @@ function Scene(props: SceneProps) {
         lightColor={lightColor}
         stats={stats.current}
         creatureColor={creatureColor}
-        screenSize={32}
+        screenSize={[22, 32]}
       />
       <EggCasing color={creatureColor} />
       <EggButtons

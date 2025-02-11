@@ -205,6 +205,6 @@ function LCDItemScreen(props: {
     }
   });
 
-  return <group position={[20, 0, 0]}>{pixels}</group>;
+  return <group position={[20, 0, 1]}>{pixels}</group>;
 }
 export default LCDItemScreen;

@@ -18,7 +18,7 @@ function LCDGlass(props: LCDGlassProps) {
   );
 
   return (
-    <group position={[0, 0, -10]}>
+    <group position={[0, 0, -12]}>
       <mesh
         geometry={screenGeometry}
         position={[screenSize / 2 - 0.5, -screenSize / 2 + 0.5, -1]}
@@ -36,11 +36,11 @@ function LCDGlass(props: LCDGlassProps) {
         position={[screenSize / 2 - 0.5, -screenSize / 2 + 0.5, 10]}
       >
         <meshStandardMaterial
-          opacity={0.3}
+          opacity={0.6}
           transparent
           color="black"
           metalness={1}
-          roughness={0.5}
+          roughness={0.25}
           depthWrite={false}
         />
       </mesh>

@@ -175,6 +175,6 @@ function LCDCreatureScreen(props: {
     }
   });
 
-  return <group position={[3, 0, 4]}>{pixels}</group>;
+  return <group position={[4, 0, 1]}>{pixels}</group>;
 }
 export default LCDCreatureScreen;

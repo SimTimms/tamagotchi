@@ -102,9 +102,9 @@ function App() {
         <ambientLight intensity={0.4} />
         <directionalLight
           color="#fff"
-          position={[-2, 3, 3]}
+          position={[2, 1, 3]}
           castShadow
-          intensity={4}
+          intensity={2}
         />
         <Scene
           selectSound={selectSound}

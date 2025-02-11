@@ -58,7 +58,7 @@ function LCDSceen(props: LCDSceenProps) {
           isSick={stats.isSick}
         />
       </group>
-      <group position={[0, -10, -0.8]}>
+      <group position={[0, -13, -0.8]}>
         <LCDCreatureScreen
           screenSize={screenSize}
           currentAnim={currentAnim}

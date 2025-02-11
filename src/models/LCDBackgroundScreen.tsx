@@ -1,11 +1,11 @@
 import * as THREE from "three";
 import { useEffect, useState } from "react";
 import { useFrame } from "@react-three/fiber";
-import { rainbow } from "../data/backgrounds";
+import { city } from "../data/backgrounds";
 
 function LCDBackgroundScreen(props: {
   item: string;
-  screenSize: number;
+  screenSize: [number, number];
   animateItem: boolean;
 }) {
   const { item, animateItem, screenSize } = props;
@@ -13,23 +13,37 @@ function LCDBackgroundScreen(props: {
   const [pixels, setPixels] = useState<any>([]);
   let newAnim = 0;
 
-  const blankRow = new Array(screenSize).fill(0);
+  const blankRow = new Array(screenSize[0]).fill(0);
 
   const tamagotchiArray: { [key: string]: any[] } = {
-    rainbow: rainbow(screenSize),
+    city: city(screenSize),
   };
 
   const BoxGeometry = new THREE.BoxGeometry(1, 1, 1, 1);
 
-  const saturation = 52;
-  const lightness = 38;
+  const saturation = 32;
+  const lightness = 60;
 
-  const materialArr: THREE.MeshBasicMaterial[] = [];
-
-  for (let a = 0; a < 3; a += 30) {
+  const materialArr: THREE.MeshStandardMaterial[] = [];
+  materialArr.push(
+    new THREE.MeshStandardMaterial({
+      color: `#222`,
+    })
+  );
+  materialArr.push(
+    new THREE.MeshStandardMaterial({
+      color: `#222`,
+    })
+  );
+  materialArr.push(
+    new THREE.MeshStandardMaterial({
+      color: `#444`,
+    })
+  );
+  for (let c = 0; c < 360; c += 20) {
     materialArr.push(
-      new THREE.MeshBasicMaterial({
-        color: `hsl(${a}, ${saturation}%, ${lightness}%)`,
+      new THREE.MeshStandardMaterial({
+        color: `hsl(${c}, ${saturation}%, ${lightness}%)`,
       })
     );
   }
@@ -48,18 +62,23 @@ function LCDBackgroundScreen(props: {
       if (!tamagotchiArray[item][animFrame]) {
         useAnimFrame = 0;
       }
-      for (let i = 0; i < screenSize; i++) {
-        for (let j = 0; j < screenSize; j++) {
-          const thisRowArray = tamagotchiArray[item][useAnimFrame][i];
-          if (thisRowArray.length < screenSize) {
-            for (let a = 0; a < screenSize - thisRowArray.length; a++) {
+      for (let i = 0; i < screenSize[0]; i++) {
+        for (let j = 0; j < screenSize[1]; j++) {
+          var thisRowArray = tamagotchiArray[item][useAnimFrame][i];
+          if (!thisRowArray) {
+            thisRowArray = blankRow;
+          }
+
+          if (thisRowArray.length < screenSize[0]) {
+            for (let a = 0; a < screenSize[0] - thisRowArray.length; a++) {
               thisRowArray.push(0);
             }
           }
-          if (tamagotchiArray[item][useAnimFrame].length < screenSize) {
+
+          if (tamagotchiArray[item][useAnimFrame].length < screenSize[1]) {
             for (
               let a = 0;
-              a < screenSize - tamagotchiArray[item][useAnimFrame].length;
+              a < screenSize[1] - tamagotchiArray[item][useAnimFrame].length;
               a++
             ) {
               tamagotchiArray[item][useAnimFrame].push(blankRow);
@@ -76,7 +95,6 @@ function LCDBackgroundScreen(props: {
               <mesh
                 key={`${i}-${j}`}
                 geometry={BoxGeometry}
-                scale={1}
                 position={[j, -i, isActivated ? 0 : -0.4]}
                 material={material}
               ></mesh>

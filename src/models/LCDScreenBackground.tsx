@@ -6,22 +6,23 @@ interface LCDScreenBackgroundProps {
   lightColor: string;
   stats: StatsType;
   creatureColor: number;
-  screenSize: number;
+  screenSize: [number, number];
 }
 
 function LCDScreenBackground(props: LCDScreenBackgroundProps) {
   const { screenSize } = props;
   const scale = 1;
-  const screenSizeOffset = (screenSize / 2) * scale;
+  const screenSizeOffsetX = (screenSize[0] / 2) * scale;
+  const screenSizeOffsetY = (screenSize[1] / 2) * scale;
 
   return (
     <group
-      position={[-screenSizeOffset + 0.5, screenSizeOffset - 3.3, 2]}
+      position={[-screenSizeOffsetY + 0.5, screenSizeOffsetX - 4.9, 8]}
       scale={scale}
     >
       <LCDBackgroundScreen
         screenSize={screenSize}
-        item={"rainbow"}
+        item={"city"}
         animateItem={true}
       />
     </group>
