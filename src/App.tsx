@@ -44,7 +44,7 @@ function App() {
     showGlass: true,
     showMenu: true,
     bornAge: 7,
-    isDead: true,
+    isDead: false,
   });
 
   useEffect(() => {
