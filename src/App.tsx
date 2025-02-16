@@ -7,7 +7,6 @@ import select2 from "./assets/sounds/loop-3.mp3";
 import clean from "./assets/sounds/clean.mp3";
 import creatureAttention from "./assets/sounds/creature-attention.mp3";
 import GUI from "lil-gui";
-import { debug } from "console";
 
 export type GameConfig = {
   eggColour: number;
