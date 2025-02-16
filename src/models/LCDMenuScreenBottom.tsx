@@ -3,14 +3,13 @@ import { LCDIcons } from "./LCDScreen";
 
 interface LCDMenuScreenBottomProps {
   icons: LCDIcons;
-  lightColor: string;
   screenSize: number;
   currentMenu: number;
   backMaterial: string;
 }
 
 function LCDMenuScreenBottom(props: LCDMenuScreenBottomProps) {
-  const { icons, screenSize, lightColor, currentMenu, backMaterial } = props;
+  const { icons, screenSize, currentMenu, backMaterial } = props;
 
   const BoxGeometry = new THREE.PlaneGeometry(0.14, 0.14);
 

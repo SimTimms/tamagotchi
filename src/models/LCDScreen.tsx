@@ -88,7 +88,6 @@ function LCDSceen(props: LCDSceenProps) {
           <LCDMenuScreenBottom
             icons={icons}
             screenSize={screenSize}
-            lightColor={lightColor}
             currentMenu={currentMenu}
             backMaterial={`hsl(${creatureColor + 42},100%,68%)`}
           />
