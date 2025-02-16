@@ -11,6 +11,7 @@ import {
 import { useFrame } from "@react-three/fiber";
 import { animateCreature } from "./utils/animateCreature";
 import { screenColors } from "./utils/screenColors";
+import { GameConfig } from "./App";
 
 const cleanSpeed = 25;
 const healthSpeed = 1;
@@ -38,20 +39,13 @@ export type StatsType = {
 
 interface SceneProps {
   selectSound: () => void;
-  selectSound2: () => void;
-  selectSound3: () => void;
   creatureAttention: () => void;
   cleanSound: () => void;
+  config: GameConfig;
 }
 
 function Scene(props: SceneProps) {
-  const {
-    selectSound,
-    selectSound2,
-    selectSound3,
-    creatureAttention,
-    cleanSound,
-  } = props;
+  const { selectSound, creatureAttention, cleanSound, config } = props;
 
   const [currentAnim, setCurrentAnim] = useState<string>("happy");
   const [animateItem, setAnimateItem] = useState<boolean>(false);
@@ -352,7 +346,6 @@ function Scene(props: SceneProps) {
     <>
       <OrbitControls />
       <Stats />
-
       <LCDScreen
         currentAnim={currentAnim}
         currentItem={currentItem}
@@ -363,13 +356,16 @@ function Scene(props: SceneProps) {
         stats={stats.current}
         creatureColor={creatureColor}
         screenSize={32}
+        config={config}
       />
-      <LCDScreenBackground
-        lightColor={lightColor}
-        stats={stats.current}
-        creatureColor={creatureColor}
-        screenSize={[22, 32]}
-      />
+      {config.debugShowBackground && (
+        <LCDScreenBackground
+          lightColor={lightColor}
+          stats={stats.current}
+          creatureColor={creatureColor}
+          screenSize={[22, 32]}
+        />
+      )}
       <EggCasing color={creatureColor} />
       <EggButtons
         buttonOneClick={() => {
@@ -382,7 +378,7 @@ function Scene(props: SceneProps) {
           );
         }}
         buttonTwoClick={() => {
-          selectSound2();
+          selectSound();
           executeEventsCentre(
             currentItem,
             setCurrentSubMenu,
@@ -397,7 +393,7 @@ function Scene(props: SceneProps) {
           );
         }}
         buttonThreeClick={() => {
-          selectSound3();
+          selectSound();
           executeEventsRight(
             currentSubMenu,
             setAnimateItem,

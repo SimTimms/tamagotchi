@@ -6,6 +6,7 @@ import LCDMenuScreenBottom from "./LCDMenuScreenBottom";
 import { loadTextures } from "../utils/loadTextures";
 import * as THREE from "three";
 import { StatsType } from "../Scene";
+import { GameConfig } from "../App";
 
 export type LCDIcons = {
   iconFood: THREE.Texture;
@@ -29,6 +30,7 @@ interface LCDSceenProps {
   stats: StatsType;
   creatureColor: number;
   screenSize: number;
+  config: GameConfig;
 }
 
 function LCDSceen(props: LCDSceenProps) {
@@ -42,43 +44,56 @@ function LCDSceen(props: LCDSceenProps) {
     stats,
     creatureColor,
     screenSize,
+    config,
   } = props;
 
   const icons = loadTextures();
 
   return (
     <group position={[-screenSize / 2 + 0.5, screenSize / 2 - 4, 12]}>
-      <LCDGlass screenSize={screenSize} lightColor={lightColor} />
-      <group position={[2, -3, -0.6]}>
-        <LCDMenuScreen
-          icons={icons}
-          screenSize={screenSize}
-          lightColor={lightColor}
-          currentMenu={currentMenu}
-          isSick={stats.isSick}
-        />
-      </group>
+      {config.showGlass && (
+        <LCDGlass screenSize={screenSize} lightColor={lightColor} />
+      )}
+      {config.showMenu && (
+        <group position={[2, -3, -3]}>
+          <LCDMenuScreen
+            icons={icons}
+            screenSize={screenSize}
+            lightColor={lightColor}
+            currentMenu={currentMenu}
+            isSick={stats.isSick}
+            backMaterial={`hsl(${creatureColor + 42},100%,68%)`}
+          />
+        </group>
+      )}
       <group position={[0, -13, -0.8]}>
-        <LCDCreatureScreen
-          screenSize={screenSize}
-          currentAnim={currentAnim}
-          age={age}
-          creatureColor={creatureColor}
-        />
-        <LCDItemScreen
-          screenSize={screenSize}
-          item={currentItem}
-          animateItem={animateItem}
-        />
+        {config.debugShowCreature && (
+          <LCDCreatureScreen
+            screenSize={screenSize}
+            currentAnim={currentAnim}
+            age={age}
+            creatureColor={creatureColor}
+          />
+        )}
+        {config.debugShowItem && (
+          <LCDItemScreen
+            screenSize={screenSize}
+            item={currentItem}
+            animateItem={animateItem}
+          />
+        )}
       </group>
-      <group position={[2, -28.6, -0.6]}>
-        <LCDMenuScreenBottom
-          icons={icons}
-          screenSize={screenSize}
-          lightColor={lightColor}
-          currentMenu={currentMenu}
-        />
-      </group>
+      {config.showMenu && (
+        <group position={[2, -28.6, -3]}>
+          <LCDMenuScreenBottom
+            icons={icons}
+            screenSize={screenSize}
+            lightColor={lightColor}
+            currentMenu={currentMenu}
+            backMaterial={`hsl(${creatureColor + 42},100%,68%)`}
+          />
+        </group>
+      )}
     </group>
   );
 }

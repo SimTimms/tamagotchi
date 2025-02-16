@@ -22,26 +22,11 @@ function LCDGlass(props: LCDGlassProps) {
       <mesh
         geometry={screenGeometry}
         position={[screenSize / 2 - 0.5, -screenSize / 2 + 0.5, -1]}
-        receiveShadow
-        castShadow
       >
         <meshStandardMaterial
           color={lightColor}
           emissive={lightColor}
           emissiveIntensity={0.4}
-        />
-      </mesh>
-      <mesh
-        geometry={screenGeometry}
-        position={[screenSize / 2 - 0.5, -screenSize / 2 + 0.5, 10]}
-      >
-        <meshStandardMaterial
-          opacity={0.6}
-          transparent
-          color="black"
-          metalness={1}
-          roughness={0.25}
-          depthWrite={false}
         />
       </mesh>
     </group>

@@ -10,19 +10,19 @@ interface LCDScreenBackgroundProps {
 }
 
 function LCDScreenBackground(props: LCDScreenBackgroundProps) {
-  const { screenSize } = props;
+  const { screenSize, lightColor } = props;
   const scale = 1;
   const screenSizeOffsetX = (screenSize[0] / 2) * scale;
   const screenSizeOffsetY = (screenSize[1] / 2) * scale;
-
+  console.log(lightColor);
   return (
     <group
-      position={[-screenSizeOffsetY + 0.5, screenSizeOffsetX - 4.9, 8]}
+      position={[-screenSizeOffsetY + 0.5, screenSizeOffsetX - 4.9, 4]}
       scale={scale}
     >
       <LCDBackgroundScreen
         screenSize={screenSize}
-        item={"city"}
+        item={lightColor === "#f48bba" ? "desert" : "city"}
         animateItem={true}
       />
     </group>

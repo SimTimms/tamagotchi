@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { useEffect, useState } from "react";
 import { useFrame } from "@react-three/fiber";
-import { city } from "../data/backgrounds";
+import { city, desert } from "../data/backgrounds";
 
 function LCDBackgroundScreen(props: {
   item: string;
@@ -17,12 +17,13 @@ function LCDBackgroundScreen(props: {
 
   const tamagotchiArray: { [key: string]: any[] } = {
     city: city(),
+    desert: desert(),
   };
 
   const BoxGeometry = new THREE.BoxGeometry(1, 1, 1, 1);
 
-  const saturation = 32;
-  const lightness = 60;
+  const saturation = 100;
+  const lightness = 80;
 
   const materialArr: THREE.MeshStandardMaterial[] = [];
   materialArr.push(
@@ -37,10 +38,10 @@ function LCDBackgroundScreen(props: {
   );
   materialArr.push(
     new THREE.MeshStandardMaterial({
-      color: `#444`,
+      color: `#666`,
     })
   );
-  for (let c = 0; c < 360; c += 20) {
+  for (let c = 0; c < 360; c += 10) {
     materialArr.push(
       new THREE.MeshStandardMaterial({
         color: `hsl(${c}, ${saturation}%, ${lightness}%)`,

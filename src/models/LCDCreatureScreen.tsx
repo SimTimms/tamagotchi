@@ -15,7 +15,7 @@ function LCDCreatureScreen(props: {
   const [pixels, setPixels] = useState<any>([]);
   const screenSize = 32;
 
-  const blankRow = new Array(screenSize).fill(0);
+  const blankRow = new Array(screenSize).fill("00");
   useEffect(() => {
     const {
       sad,
@@ -45,69 +45,17 @@ function LCDCreatureScreen(props: {
   }, [age, screenSize]);
 
   const BoxGeometry = new THREE.BoxGeometry(1, 1, 1, 1);
-  const BoxMaterialInactive = new THREE.MeshStandardMaterial({
-    color: "#a7cbbf",
-  });
-  const BoxMaterialActive = new THREE.MeshStandardMaterial({
-    color: "#000",
-    roughness: 0.1,
-  });
-
-  const hue = 41 + creatureColor;
-  const saturation = 100;
-  const lightness = 68;
-
-  const BoxMaterialDark = new THREE.MeshStandardMaterial({
-    color: `hsl(${hue}, ${saturation}%, ${lightness - 5}%)`,
-    roughness: 0.1,
-  });
-
-  const BoxMaterial = new THREE.MeshStandardMaterial({
-    color: `hsl(${hue}, ${saturation}%, ${lightness}%)`,
-    roughness: 0.1,
-  });
-
-  const BoxMaterialLight = new THREE.MeshStandardMaterial({
-    color: `hsl(${hue}, ${saturation}%, ${lightness + 5}%)`,
-    roughness: 0.1,
-  });
-
-  const ghostHue = 187;
-  const ghostSaturation = 52;
-  const ghostLightness = 82;
-
-  const ghostMaterialDark = new THREE.MeshStandardMaterial({
-    color: `hsl(${ghostHue}, ${ghostSaturation}%, ${ghostLightness - 10}%)`,
-    roughness: 0.1,
-  });
-
-  const ghostMaterial = new THREE.MeshStandardMaterial({
-    color: `hsl(${ghostHue}, ${ghostSaturation}%, ${ghostLightness}%)`,
-    roughness: 0.1,
-  });
-
-  const ghostMaterialLight = new THREE.MeshStandardMaterial({
-    color: `hsl(${ghostHue}, ${ghostSaturation}%, ${ghostLightness + 10}%)`,
-    roughness: 0.1,
-  });
-
-  const materialArr = [
-    BoxMaterialActive,
-    BoxMaterialActive,
-    BoxMaterial,
-    BoxMaterialDark,
-    BoxMaterialLight,
-    ghostMaterialDark,
-    ghostMaterial,
-    ghostMaterialLight,
-  ];
 
   useEffect(() => {
     if (!animArray[currentAnim]) {
       return;
     }
+
     function generateScreenPixels() {
       const pixelsA = [];
+
+      const materialArr: any[] = [];
+
       let useAnimFrame = animFrame;
       if (!animArray[currentAnim]) {
         setAnimFrame(0);
@@ -120,7 +68,7 @@ function LCDCreatureScreen(props: {
           const thisRowArray = animArray[currentAnim][useAnimFrame][i];
           if (thisRowArray.length < screenSize) {
             for (let a = 0; a < screenSize - thisRowArray.length; a++) {
-              thisRowArray.push(0);
+              thisRowArray.push("00");
             }
           }
           if (animArray[currentAnim][useAnimFrame].length < screenSize) {
@@ -132,14 +80,27 @@ function LCDCreatureScreen(props: {
               animArray[currentAnim][useAnimFrame].push(blankRow);
             }
           }
-          let isActivated = thisRowArray[j] > 0;
-          let colorIndex = thisRowArray[j];
-
-          const material = isActivated
-            ? materialArr[colorIndex]
-            : BoxMaterialInactive;
+          let isActivated = thisRowArray[j] !== "00";
 
           if (isActivated) {
+            let colorIndex = thisRowArray[j];
+
+            if (materialArr.indexOf(colorIndex) === -1) {
+              if (colorIndex.toString().search("b") !== -1) {
+                materialArr[colorIndex] = new THREE.MeshStandardMaterial({
+                  color: `hsl(${creatureColor + 42},100%,${
+                    colorIndex[1] * 10
+                  }%)`,
+                  roughness: 0.1,
+                });
+              } else {
+                materialArr[colorIndex] = new THREE.MeshStandardMaterial({
+                  color: `hsl(${colorIndex + creatureColor + 42},100%,68%)`,
+                  roughness: 0.1,
+                });
+              }
+            }
+            const material = isActivated && materialArr[colorIndex];
             pixelsA.push(
               <mesh
                 key={`${i}-${j}`}
@@ -175,6 +136,6 @@ function LCDCreatureScreen(props: {
     }
   });
 
-  return <group position={[4, 0, 1]}>{pixels}</group>;
+  return <group position={[4, 2, 1]}>{pixels}</group>;
 }
 export default LCDCreatureScreen;

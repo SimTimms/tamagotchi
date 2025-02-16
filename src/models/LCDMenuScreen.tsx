@@ -7,10 +7,11 @@ interface LCDMenuScreenProps {
   lightColor: string;
   currentMenu: number;
   isSick: boolean;
+  backMaterial: string;
 }
 
 function LCDMenuScreen(props: LCDMenuScreenProps) {
-  const { icons, screenSize, lightColor, currentMenu, isSick } = props;
+  const { icons, screenSize, currentMenu, isSick, backMaterial } = props;
 
   const BoxGeometry = new THREE.PlaneGeometry(0.14, 0.14);
 
@@ -49,17 +50,19 @@ function LCDMenuScreen(props: LCDMenuScreenProps) {
     opacity: isSick ? 0 : currentMenu === 3 ? 1 : 0.3,
   });
 
-  const backMaterial = new THREE.MeshStandardMaterial({
-    color: lightColor,
-  });
-
   return (
     <group scale={screenSize}>
       <mesh
         geometry={new THREE.BoxGeometry(1, 0.2, 0.3)}
-        material={backMaterial}
         position={[0.42, 0.01, -0.15]}
-      ></mesh>
+      >
+        <meshStandardMaterial attach="material-0" color="#000" />
+        <meshStandardMaterial attach="material-1" color="#000" />
+        <meshStandardMaterial attach="material-2" color="#000" />
+        <meshStandardMaterial attach="material-3" color="#000" />
+        <meshStandardMaterial attach="material-4" color={backMaterial} />
+        <meshStandardMaterial attach="material-5" color={backMaterial} />
+      </mesh>
       <mesh
         geometry={BoxGeometry}
         position={[0.04, 0, 0.02]}
