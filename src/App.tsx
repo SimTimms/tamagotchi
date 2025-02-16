@@ -7,6 +7,7 @@ import select2 from "./assets/sounds/loop-3.mp3";
 import clean from "./assets/sounds/clean.mp3";
 import creatureAttention from "./assets/sounds/creature-attention.mp3";
 import GUI from "lil-gui";
+import { debug } from "console";
 
 export type GameConfig = {
   eggColour: number;
@@ -20,6 +21,8 @@ export type GameConfig = {
   debugShowItem: boolean;
   showGlass: boolean;
   showMenu: boolean;
+  bornAge: number;
+  isDead: boolean;
 };
 
 function App() {
@@ -41,6 +44,8 @@ function App() {
     debugShowItem: true,
     showGlass: true,
     showMenu: true,
+    bornAge: 7,
+    isDead: true,
   });
 
   useEffect(() => {
@@ -48,6 +53,9 @@ function App() {
     const eggFolder = gui.addFolder("Egg");
     const lightFolder = gui.addFolder("Lighting");
     const debugFolder = gui.addFolder("Debug");
+    debugFolder.add(gameConfig, "isDead").onChange((value: boolean) => {
+      setGameConfig({ ...gameConfig, isDead: value });
+    });
     debugFolder.add(gameConfig, "showMenu").onChange((value: boolean) => {
       setGameConfig({ ...gameConfig, showMenu: value });
     });
@@ -70,6 +78,12 @@ function App() {
     eggFolder.addColor(gameConfig, "eggColour").onChange((value: number) => {
       setGameConfig({ ...gameConfig, eggColour: value });
     });
+    eggFolder
+      .add(gameConfig, "bornAge", 0, 50)
+      .step(1)
+      .onChange((value: number) => {
+        setGameConfig({ ...gameConfig, bornAge: value });
+      });
     lightFolder
       .add(gameConfig, "ambientLight", 0, 1)
       .onChange((value: number) => {

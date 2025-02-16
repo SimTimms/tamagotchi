@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { LCDScreen, LCDScreenBackground } from "./models";
 import { Stats, OrbitControls } from "@react-three/drei";
 import EggCasing from "./models/EggCasing";
@@ -17,7 +17,6 @@ const cleanSpeed = 25;
 const healthSpeed = 1;
 const hungerThreshold = 85;
 const hungerSickThreshold = 63;
-const bornAge = 3;
 
 export type StatsType = {
   health: number;
@@ -76,6 +75,16 @@ function Scene(props: SceneProps) {
 
   const statSpeed = 1;
 
+  useEffect(() => {
+    if (config.isDead) {
+      stats.current.dead = true;
+      setAction("isDead");
+    } else {
+      stats.current.dead = false;
+      setAction("none");
+    }
+  }, [config.isDead]);
+
   function increasePoop(amount: number) {
     stats.current.poop = stats.current.poop + amount;
   }
@@ -86,7 +95,7 @@ function Scene(props: SceneProps) {
   }
 
   function setToHatch() {
-    if (stats.current.age > bornAge && stage === 0) {
+    if (stats.current.age > config.bornAge && stage === 0) {
       hatch();
     }
   }
@@ -125,7 +134,7 @@ function Scene(props: SceneProps) {
   }
 
   function countDownHunger(delta: number) {
-    return stats.current.age > bornAge
+    return stats.current.age > config.bornAge
       ? stats.current.hunger - delta * statSpeed
       : 100;
   }
@@ -249,7 +258,7 @@ function Scene(props: SceneProps) {
       currentItem !== "poop" &&
       !stats.current.isSick &&
       !stats.current.isHungry &&
-      stats.current.age > bornAge;
+      stats.current.age > config.bornAge;
 
     if (finishedPlaying) {
       cleanSound();
