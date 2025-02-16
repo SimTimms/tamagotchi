@@ -36,11 +36,11 @@ function App() {
     directionalLightX: 2,
     directionalLightY: 3,
     directionalLightZ: 3,
-    debugShowCreature: false,
-    debugShowBackground: false,
-    debugShowItem: false,
+    debugShowCreature: true,
+    debugShowBackground: true,
+    debugShowItem: true,
     showGlass: false,
-    showMenu: false,
+    showMenu: true,
   });
 
   useEffect(() => {
