@@ -39,7 +39,7 @@ function App() {
     debugShowCreature: true,
     debugShowBackground: true,
     debugShowItem: true,
-    showGlass: false,
+    showGlass: true,
     showMenu: true,
   });
 
