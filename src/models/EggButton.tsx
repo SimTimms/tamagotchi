@@ -11,7 +11,7 @@ interface EggButtonProps {
   color: string;
 }
 function EggButton(props: EggButtonProps) {
-  const { buttonClick, model, position, label, color } = props;
+  const { buttonClick, model, position, label } = props;
   const buttonMesh = useRef<THREE.Mesh>(null);
   const raycaster = new THREE.Raycaster();
   const rayOrigin = new THREE.Vector3(-3, 0, 0);
