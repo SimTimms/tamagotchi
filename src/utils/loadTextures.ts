@@ -1,7 +1,7 @@
 import * as THREE from "three";
 const TextureLoader = new THREE.TextureLoader();
 
-export const loadTextures = () => {
+export const loadIconTextures = () => {
   const iconFood = TextureLoader.load("./textures/icon-food.png");
   iconFood.colorSpace = THREE.SRGBColorSpace;
   const iconLight = TextureLoader.load("./textures/icon-light.png");
@@ -31,5 +31,18 @@ export const loadTextures = () => {
     iconChat,
     iconHeart,
     iconGame,
+  };
+};
+
+export const loadTextures = () => {
+  const eggTexture = TextureLoader.load("./textures/texture.png");
+  eggTexture.colorSpace = THREE.SRGBColorSpace;
+  const eggMetalTexture = TextureLoader.load("./textures/texture-metal.png");
+  const eggRoughTexture = TextureLoader.load("./textures/texture-rough.png");
+
+  return {
+    eggTexture,
+    eggMetalTexture,
+    eggRoughTexture,
   };
 };

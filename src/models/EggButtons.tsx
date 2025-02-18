@@ -7,9 +7,10 @@ interface EggButtonsProps {
   buttonOneClick: () => void;
   buttonTwoClick: () => void;
   buttonThreeClick: () => void;
+  color: string;
 }
 function EggButtons(props: EggButtonsProps) {
-  const { buttonOneClick, buttonTwoClick, buttonThreeClick } = props;
+  const { buttonOneClick, buttonTwoClick, buttonThreeClick, color } = props;
   const button = useLoader(GLTFLoader, "./models/button.glb");
   const raycaster = new THREE.Raycaster();
   const rayOrigin = new THREE.Vector3(-3, 0, 0);
@@ -17,7 +18,6 @@ function EggButtons(props: EggButtonsProps) {
   rayDirection.normalize();
 
   raycaster.set(rayOrigin, rayDirection);
-
   return (
     <>
       {button.scene && (
@@ -30,16 +30,22 @@ function EggButtons(props: EggButtonsProps) {
             buttonClick={buttonOneClick}
             model={button.scene}
             position={[-3, 0, -0.96]}
+            label="SELECT"
+            color={color}
           />
           <EggButton
             buttonClick={buttonTwoClick}
             model={button.scene}
             position={[0, 0, 0]}
+            label="ENTER"
+            color={color}
           />
           <EggButton
             buttonClick={buttonThreeClick}
             model={button.scene}
             position={[3, 0, -0.96]}
+            label="CANCEL"
+            color={color}
           />
         </group>
       )}

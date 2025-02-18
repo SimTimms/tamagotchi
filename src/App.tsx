@@ -7,7 +7,9 @@ import select2 from "./assets/sounds/loop-3.mp3";
 import clean from "./assets/sounds/clean.mp3";
 import creatureAttention from "./assets/sounds/creature-attention.mp3";
 import GUI from "lil-gui";
+import { Environment } from "@react-three/drei";
 
+import { loadTextures } from "./utils/loadTextures";
 export type GameConfig = {
   eggColour: number;
   ambientLight: number;
@@ -17,6 +19,7 @@ export type GameConfig = {
   directionalLightZ: number;
   debugShowCreature: boolean;
   debugShowBackground: boolean;
+  debugShowCanvasBackground: boolean;
   debugShowItem: boolean;
   showGlass: boolean;
   showMenu: boolean;
@@ -40,12 +43,14 @@ function App() {
     directionalLightZ: 3,
     debugShowCreature: true,
     debugShowBackground: true,
+    debugShowCanvasBackground: true,
     debugShowItem: true,
     showGlass: true,
     showMenu: true,
     bornAge: 7,
     isDead: false,
   });
+  const { eggTexture, eggMetalTexture, eggRoughTexture } = loadTextures();
 
   useEffect(() => {
     const gui = new GUI();
@@ -70,6 +75,11 @@ function App() {
       .add(gameConfig, "debugShowBackground")
       .onChange((value: boolean) => {
         setGameConfig({ ...gameConfig, debugShowBackground: value });
+      });
+    debugFolder
+      .add(gameConfig, "debugShowCanvasBackground")
+      .onChange((value: boolean) => {
+        setGameConfig({ ...gameConfig, debugShowCanvasBackground: value });
       });
     debugFolder.add(gameConfig, "debugShowItem").onChange((value: boolean) => {
       setGameConfig({ ...gameConfig, debugShowItem: value });
@@ -140,6 +150,19 @@ function App() {
   return (
     <div className="background">
       <Canvas className="canvas" camera={{ position: [3, 3, 83] }} shadows>
+        <Environment
+          files={[
+            "./environment/px.png",
+            "./environment/nx.png",
+            "./environment/py.png",
+            "./environment/ny.png",
+            "./environment/pz.png",
+            "./environment/nz.png",
+          ]}
+          background={true}
+          blur={0.3}
+          backgroundIntensity={1.5}
+        />
         <ambientLight intensity={gameConfig.ambientLight} />
         <directionalLight
           color="#fff"
@@ -156,8 +179,9 @@ function App() {
           creatureAttention={creatureAttentionSound}
           cleanSound={cleanSound}
           config={gameConfig}
+          eggTextures={[eggTexture, eggMetalTexture, eggRoughTexture]}
         />
-        <OrbitControls />
+        <OrbitControls enablePan={false} enableZoom={false} maxZoom={1} />
       </Canvas>
     </div>
   );

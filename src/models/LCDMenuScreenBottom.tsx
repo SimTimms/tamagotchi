@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { LCDIcons } from "./LCDScreen";
+import { Html } from "@react-three/drei";
 
 interface LCDMenuScreenBottomProps {
   icons: LCDIcons;
@@ -53,6 +54,42 @@ function LCDMenuScreenBottom(props: LCDMenuScreenBottomProps) {
         <meshStandardMaterial attach="material-4" color={backMaterial} />
         <meshStandardMaterial attach="material-5" color={backMaterial} />
       </mesh>
+      {currentMenu > 3 && (
+        <group position={[0.04, 0, 0.02]}>
+          <Html
+            style={{
+              fontSize: "2vh",
+              width: "20vw",
+              left: "-28vh",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              top: "-2vh",
+            }}
+          >
+            <div
+              style={{
+                paddingRight: 10,
+                color: "#000",
+                textShadow: "2px 2px 5px rgba(0,0,0,0.6)",
+              }}
+            >
+              {currentMenu === 4
+                ? "WASH"
+                : currentMenu === 5
+                ? "N/A"
+                : currentMenu === 6
+                ? "CHAT"
+                : currentMenu === 7
+                ? "COLOUR"
+                : ""}
+            </div>
+            <div
+              style={{ border: `1px solid #000`, width: "20vw", opacity: 0.4 }}
+            ></div>
+          </Html>
+        </group>
+      )}
       <mesh
         geometry={BoxGeometry}
         position={[0.04, 0, 0.02]}

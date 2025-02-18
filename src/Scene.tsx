@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { LCDScreen, LCDScreenBackground } from "./models";
-import { Stats, OrbitControls } from "@react-three/drei";
+import { Stats } from "@react-three/drei";
 import EggCasing from "./models/EggCasing";
 import EggButtons from "./models/EggButtons";
 import {
@@ -12,6 +12,7 @@ import { useFrame } from "@react-three/fiber";
 import { animateCreature } from "./utils/animateCreature";
 import { screenColors } from "./utils/screenColors";
 import { GameConfig } from "./App";
+import * as THREE from "three";
 
 const cleanSpeed = 25;
 const healthSpeed = 1;
@@ -41,10 +42,12 @@ interface SceneProps {
   creatureAttention: () => void;
   cleanSound: () => void;
   config: GameConfig;
+  eggTextures: [THREE.Texture, THREE.Texture, THREE.Texture];
 }
 
 function Scene(props: SceneProps) {
-  const { selectSound, creatureAttention, cleanSound, config } = props;
+  const { selectSound, creatureAttention, cleanSound, config, eggTextures } =
+    props;
 
   const [currentAnim, setCurrentAnim] = useState<string>("happy");
   const [animateItem, setAnimateItem] = useState<boolean>(false);
@@ -321,7 +324,6 @@ function Scene(props: SceneProps) {
 
     return stats.current.cleanliness;
   }
-
   useFrame((_, delta) => {
     setToHungry();
     setToHatch();
@@ -329,7 +331,6 @@ function Scene(props: SceneProps) {
     setDead();
     setSad();
     setDirty();
-
     stats.current = {
       ...stats.current,
       hunger: countDownHunger(delta),
@@ -353,8 +354,8 @@ function Scene(props: SceneProps) {
 
   return (
     <>
-      <OrbitControls />
       <Stats />
+
       <LCDScreen
         currentAnim={currentAnim}
         currentItem={currentItem}
@@ -375,7 +376,7 @@ function Scene(props: SceneProps) {
           screenSize={[22, 32]}
         />
       )}
-      <EggCasing color={creatureColor} />
+      <EggCasing color={creatureColor} eggTextures={eggTextures} />
       <EggButtons
         buttonOneClick={() => {
           selectSound();
@@ -410,6 +411,7 @@ function Scene(props: SceneProps) {
             stats.current
           );
         }}
+        color={`hsl(${creatureColor + 42},100%,68%)`}
       />
     </>
   );

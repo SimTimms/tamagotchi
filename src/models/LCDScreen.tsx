@@ -3,7 +3,7 @@ import LCDItemScreen from "./LCDItemScreen";
 import LCDGlass from "./LCDGlass";
 import LCDMenuScreen from "./LCDMenuScreen";
 import LCDMenuScreenBottom from "./LCDMenuScreenBottom";
-import { loadTextures } from "../utils/loadTextures";
+import { loadIconTextures } from "../utils/loadTextures";
 import * as THREE from "three";
 import { StatsType } from "../Scene";
 import { GameConfig } from "../App";
@@ -47,7 +47,7 @@ function LCDSceen(props: LCDSceenProps) {
     config,
   } = props;
 
-  const icons = loadTextures();
+  const icons = loadIconTextures();
 
   return (
     <group position={[-screenSize / 2 + 0.5, screenSize / 2 - 4, 12]}>
