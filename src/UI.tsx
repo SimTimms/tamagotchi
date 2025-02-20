@@ -68,8 +68,8 @@ export default function UI(props: UIProps) {
               }}
             >
               <div className="ui">
-                <h1>Tamagotchi</h1>
-                <h1 style={{ color: "#fff" }}>たまごっち</h1>
+                <h1 style={{ fontSize: "4vh" }}>Tamagotchi</h1>
+                <h1 style={{ color: "#fff", fontSize: "4vh" }}>たまごっち</h1>
                 <div className="ui-row">
                   <span>Hunger:</span>
                   <span>{(100 - hunger).toFixed(0)}</span>
