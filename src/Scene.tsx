@@ -7,7 +7,6 @@ import {
   useMemo,
 } from "react";
 import { LCDScreen, LCDScreenBackground } from "./models";
-import { Stats } from "@react-three/drei";
 import EggCasing from "./models/EggCasing";
 import EggButtons from "./models/EggButtons";
 import {
@@ -440,7 +439,6 @@ function Scene(props: SceneProps) {
         {({ gameConfig }) => {
           return (
             <>
-              <Stats />
               <UI
                 hunger={stats.current.hunger}
                 cleanliness={stats.current.cleanliness}

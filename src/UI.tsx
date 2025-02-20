@@ -33,7 +33,7 @@ export default function UI(props: UIProps) {
   useEffect(() => {
     if (audioRef.current && audioRef.current.paused) {
       if (isPlaying) {
-        audioRef.current.volume = 0.1;
+        audioRef.current.volume = 0.5;
         audioRef.current.play();
       }
     } else if (audioRef.current && !audioRef.current.paused) {

@@ -78,7 +78,7 @@ function App() {
       if (audioRefClean.current) {
         audioRefClean.current.pause();
         audioRefClean.current.currentTime = 0;
-        audioRefClean.current.volume = 0.5;
+        audioRefClean.current.volume = 0.15;
         audioRefClean.current.play();
       }
     };
@@ -87,7 +87,7 @@ function App() {
       if (audioRef.current) {
         audioRef.current.pause();
         audioRef.current.currentTime = 0;
-        audioRef.current.volume = 0.5;
+        audioRef.current.volume = 0.05;
         audioRef.current.play();
       }
     };
@@ -96,7 +96,7 @@ function App() {
       if (creatureAttentionRef.current) {
         creatureAttentionRef.current.pause();
         creatureAttentionRef.current.currentTime = 0;
-        creatureAttentionRef.current.volume = 0.5;
+        creatureAttentionRef.current.volume = 0.15;
         creatureAttentionRef.current.play();
       }
     };
