@@ -5,7 +5,6 @@ import LCDMenuScreen from "./LCDMenuScreen";
 import LCDMenuScreenBottom from "./LCDMenuScreenBottom";
 import { loadIconTextures } from "../utils/loadTextures";
 import * as THREE from "three";
-import { StatsType } from "../Scene";
 import { GameConfig } from "../defaultConfig";
 
 export type LCDIcons = {

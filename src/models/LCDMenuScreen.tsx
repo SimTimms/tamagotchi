@@ -1,6 +1,5 @@
 import * as THREE from "three";
 import { LCDIcons } from "./LCDScreen";
-import { Html } from "@react-three/drei";
 interface LCDMenuScreenProps {
   icons: LCDIcons;
   screenSize: number;

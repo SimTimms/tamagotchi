@@ -8,7 +8,7 @@ function LCDBackgroundScreen(props: {
   screenSize: [number, number];
   animateItem: boolean;
 }) {
-  const { item, animateItem, screenSize } = props;
+  const { item, screenSize } = props;
   const [animFrame, setAnimFrame] = useState(0);
   const [pixels, setPixels] = useState<any>([]);
   let newAnim = 0;

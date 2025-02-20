@@ -1,4 +1,4 @@
-import { VolumeOff, Volume2, RefreshCcw, Linkedin } from "lucide-react";
+import { VolumeOff, Volume2 } from "lucide-react";
 import { ConfigurationContext } from "./App";
 import { useEffect, useRef, useState } from "react";
 import Explosion from "./Explosion";
@@ -102,7 +102,7 @@ export default function UI(props: UIProps) {
                   <span>Mood</span>
                   <span>{isHappy ? "😊" : "😥"}</span>
                 </div>
-                {isSick && (
+                {isDirty && (
                   <div className="ui-row">
                     <span>Dirty</span>
                     <span>💩</span>

@@ -357,6 +357,9 @@ function Scene(props: SceneProps) {
   }
 
   function setCleanliness(delta: number) {
+    if (time < -10000) {
+      return 0;
+    }
     if (stats.current.age > bornAge) {
       const isClean = stats.current.cleanliness > 0;
       const isPooped =
@@ -371,13 +374,10 @@ function Scene(props: SceneProps) {
     return stats.current.cleanliness;
   }
 
-  let timeCount = 0;
   useFrame(({ clock }, delta) => {
     const thisTime = clock.getElapsedTime();
-    timeCount = thisTime;
     if (thisTime > 1) {
       setTime(thisTime);
-      timeCount = 0;
     }
     setToHungry();
     setToHatch();
@@ -510,7 +510,7 @@ function Scene(props: SceneProps) {
             </>
           );
         }}
-      </ConfigurationContext.Consumer>{" "}
+      </ConfigurationContext.Consumer>
     </GameContext.Provider>
   );
 }
