@@ -63,42 +63,7 @@ function LCDMenuScreen(props: LCDMenuScreenProps) {
         <meshStandardMaterial attach="material-4" color={backMaterial} />
         <meshStandardMaterial attach="material-5" color={backMaterial} />
       </mesh>
-      {currentMenu < 4 && (
-        <group position={[0.04, 0, 0.02]}>
-          <Html
-            style={{
-              fontSize: "2vh",
-              width: "20vw",
-              left: "-28vh",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              top: "-2vh",
-            }}
-          >
-            <div
-              style={{
-                paddingRight: 10,
-                color: "#000",
-                textShadow: "2px 2px 5px rgba(0,0,0,0.6)",
-              }}
-            >
-              {currentMenu === 0
-                ? "FOOD"
-                : currentMenu === 1
-                ? "LIGHT"
-                : currentMenu === 2
-                ? "PLAY"
-                : currentMenu === 3
-                ? "SICK"
-                : ""}
-            </div>
-            <div
-              style={{ border: `1px solid #000`, width: "20vw", opacity: 0.4 }}
-            ></div>
-          </Html>
-        </group>
-      )}
+
       <mesh
         position={[0.0, 0, 0.02]}
         geometry={BoxGeometry}

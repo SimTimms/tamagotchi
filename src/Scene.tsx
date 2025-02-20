@@ -1,4 +1,11 @@
-import { useState, useRef, useEffect } from "react";
+import {
+  useState,
+  useRef,
+  useEffect,
+  useContext,
+  createContext,
+  useMemo,
+} from "react";
 import { LCDScreen, LCDScreenBackground } from "./models";
 import { Stats } from "@react-three/drei";
 import EggCasing from "./models/EggCasing";
@@ -11,13 +18,18 @@ import {
 import { useFrame } from "@react-three/fiber";
 import { animateCreature } from "./utils/animateCreature";
 import { screenColors } from "./utils/screenColors";
-import { GameConfig } from "./App";
-import * as THREE from "three";
-
+import { ConfigurationContext } from "./App";
+import UI from "./UI";
 const cleanSpeed = 25;
 const healthSpeed = 1;
 const hungerThreshold = 85;
 const hungerSickThreshold = 63;
+
+export const GameContext = createContext<{
+  gameContext: StatsType | null;
+}>({
+  gameContext: null,
+});
 
 export type StatsType = {
   health: number;
@@ -38,16 +50,15 @@ export type StatsType = {
 };
 
 interface SceneProps {
-  selectSound: () => void;
-  creatureAttention: () => void;
-  cleanSound: () => void;
-  config: GameConfig;
-  eggTextures: [THREE.Texture, THREE.Texture, THREE.Texture];
+  resetState: boolean;
+  setResetState: React.Dispatch<React.SetStateAction<boolean>>;
 }
-
 function Scene(props: SceneProps) {
-  const { selectSound, creatureAttention, cleanSound, config, eggTextures } =
-    props;
+  const { resetState, setResetState } = props;
+  const gameConfig = useContext(ConfigurationContext).gameConfig;
+
+  const { selectSound, creatureAttentionSound, cleanSound, bornAge, isDead } =
+    gameConfig;
 
   const [currentAnim, setCurrentAnim] = useState<string>("happy");
   const [animateItem, setAnimateItem] = useState<boolean>(false);
@@ -57,6 +68,7 @@ function Scene(props: SceneProps) {
   const [stage, setStage] = useState<number>(0);
   const [lightColor, setLightColor] = useState<string>(screenColors[0]);
   const [creatureColor, setCreatureColor] = useState<number>(0);
+  const [time, setTime] = useState<number>(0);
 
   const stats = useRef<StatsType>({
     health: 100,
@@ -79,14 +91,43 @@ function Scene(props: SceneProps) {
   const statSpeed = 1;
 
   useEffect(() => {
-    if (config.isDead) {
+    if (resetState) {
+      stats.current = {
+        health: 100,
+        hunger: 100,
+        happiness: 100,
+        cleanliness: 100,
+        poop: 0,
+        age: 0,
+        favouriteFood: "pizza",
+        wantsItem: false,
+        action: "none",
+        isSick: false,
+        isHungry: false,
+        isDirty: false,
+        isStarving: false,
+        isSad: false,
+        dead: false,
+      };
+      setStage(0);
+      setCurrentItem("blank");
+      setCurrentMenu(0);
+      setCurrentSubMenu(0);
+      setLightColor(screenColors[0]);
+      setCreatureColor(0);
+      setResetState(false);
+    }
+  }, [resetState]);
+
+  useEffect(() => {
+    if (isDead) {
       stats.current.dead = true;
       setAction("isDead");
     } else {
       stats.current.dead = false;
       setAction("none");
     }
-  }, [config.isDead]);
+  }, [isDead]);
 
   function increasePoop(amount: number) {
     stats.current.poop = stats.current.poop + amount;
@@ -94,11 +135,11 @@ function Scene(props: SceneProps) {
 
   function hatch() {
     setStage(1);
-    creatureAttention();
+    creatureAttentionSound();
   }
 
   function setToHatch() {
-    if (stats.current.age > config.bornAge && stage === 0) {
+    if (stats.current.age > bornAge && stage === 0) {
       hatch();
     }
   }
@@ -137,7 +178,7 @@ function Scene(props: SceneProps) {
   }
 
   function countDownHunger(delta: number) {
-    return stats.current.age > config.bornAge
+    return stats.current.age > bornAge
       ? stats.current.hunger - delta * statSpeed
       : 100;
   }
@@ -169,13 +210,13 @@ function Scene(props: SceneProps) {
   }
 
   function setSad() {
-    if (stats.current.happiness <= 60 && !stats.current.isSad) {
+    if (stats.current.happiness <= 50 && !stats.current.isSad) {
       stats.current.isSad = true;
     }
   }
 
   function setDirty() {
-    const isDirty = stats.current.cleanliness < 95;
+    const isDirty = stats.current.cleanliness < 40;
     if (isDirty) {
       stats.current.isDirty = true;
     }
@@ -261,7 +302,7 @@ function Scene(props: SceneProps) {
       currentItem !== "poop" &&
       !stats.current.isSick &&
       !stats.current.isHungry &&
-      stats.current.age > config.bornAge;
+      stats.current.age > bornAge;
 
     if (finishedPlaying) {
       cleanSound();
@@ -316,21 +357,35 @@ function Scene(props: SceneProps) {
   }
 
   function setCleanliness(delta: number) {
-    const isClean = stats.current.cleanliness > 0 && stats.current.poop >= 100;
+    if (stats.current.age > bornAge) {
+      const isClean = stats.current.cleanliness > 0;
+      const isPooped =
+        stats.current.cleanliness > 0 && stats.current.poop >= 100;
 
-    if (isClean) {
-      return stats.current.cleanliness - delta * statSpeed;
+      if (isPooped) {
+        return stats.current.cleanliness - delta * statSpeed;
+      } else if (isClean) {
+        return stats.current.cleanliness - delta * statSpeed * 2;
+      }
     }
-
     return stats.current.cleanliness;
   }
-  useFrame((_, delta) => {
+
+  let timeCount = 0;
+  useFrame(({ clock }, delta) => {
+    const thisTime = clock.getElapsedTime();
+    timeCount = thisTime;
+    if (thisTime > 1) {
+      setTime(thisTime);
+      timeCount = 0;
+    }
     setToHungry();
     setToHatch();
     setSickness();
     setDead();
-    setSad();
     setDirty();
+    setSad();
+
     stats.current = {
       ...stats.current,
       hunger: countDownHunger(delta),
@@ -346,16 +401,14 @@ function Scene(props: SceneProps) {
       currentAnim,
       setCurrentAnim,
       currentSubMenu,
-      creatureAttention,
+      creatureAttentionSound,
       cleanSound
     );
     actionEvents(delta);
   });
 
-  return (
-    <>
-      <Stats />
-
+  const memoScreen = useMemo(
+    () => (
       <LCDScreen
         currentAnim={currentAnim}
         currentItem={currentItem}
@@ -363,57 +416,102 @@ function Scene(props: SceneProps) {
         currentMenu={currentMenu}
         animateItem={animateItem}
         age={stage}
-        stats={stats.current}
+        isSick={stats.current.isSick}
         creatureColor={creatureColor}
         screenSize={32}
-        config={config}
+        config={gameConfig}
       />
-      {config.debugShowBackground && (
-        <LCDScreenBackground
-          lightColor={lightColor}
-          stats={stats.current}
-          creatureColor={creatureColor}
-          screenSize={[22, 32]}
-        />
-      )}
-      <EggCasing color={creatureColor} eggTextures={eggTextures} />
-      <EggButtons
-        buttonOneClick={() => {
-          selectSound();
-          executeEventsLeft(
-            currentSubMenu,
-            setCurrentMenu,
-            setCurrentItem,
-            stats.current
+    ),
+    [
+      currentAnim,
+      currentItem,
+      lightColor,
+      currentMenu,
+      animateItem,
+      stage,
+      stats.current.isSick,
+      creatureColor,
+      gameConfig,
+    ]
+  );
+  return (
+    <GameContext.Provider value={{ gameContext: stats.current }}>
+      <ConfigurationContext.Consumer>
+        {({ gameConfig }) => {
+          return (
+            <>
+              <Stats />
+              <UI
+                hunger={stats.current.hunger}
+                cleanliness={stats.current.cleanliness}
+                health={stats.current.health}
+                happiness={stats.current.happiness}
+                isHungry={stats.current.isHungry}
+                isSick={stats.current.isSick}
+                isDirty={stats.current.isDirty}
+                isHappy={!stats.current.isSad}
+                isDead={stats.current.dead}
+              />
+
+              {memoScreen}
+              {gameConfig.debugShowBackground && (
+                <LCDScreenBackground
+                  lightColor={lightColor}
+                  stats={stats.current}
+                  creatureColor={creatureColor}
+                  screenSize={[22, 32]}
+                />
+              )}
+
+              <EggCasing
+                color={creatureColor}
+                eggTextures={[
+                  gameConfig.eggTextures.eggTexture || null,
+                  gameConfig.eggTextures.eggMetalTexture || null,
+                  gameConfig.eggTextures.eggRoughTexture || null,
+                ]}
+              />
+              <EggButtons
+                buttonOneClick={() => {
+                  selectSound();
+                  executeEventsLeft(
+                    currentSubMenu,
+                    setCurrentMenu,
+                    setCurrentItem,
+                    stats.current
+                  );
+                }}
+                buttonTwoClick={() => {
+                  selectSound();
+                  executeEventsCentre(
+                    currentItem,
+                    setCurrentSubMenu,
+                    currentSubMenu,
+                    setCurrentItem,
+                    currentMenu,
+                    setLightColor,
+                    screenColors,
+                    setAnimateItem,
+                    stats.current,
+                    setCreatureColor
+                  );
+                }}
+                buttonThreeClick={() => {
+                  selectSound();
+                  executeEventsRight(
+                    currentSubMenu,
+                    setAnimateItem,
+                    setCurrentItem,
+                    stats.current
+                  );
+                }}
+                color={`hsl(${creatureColor + 42},100%,68%)`}
+              />
+            </>
           );
         }}
-        buttonTwoClick={() => {
-          selectSound();
-          executeEventsCentre(
-            currentItem,
-            setCurrentSubMenu,
-            currentSubMenu,
-            setCurrentItem,
-            currentMenu,
-            setLightColor,
-            screenColors,
-            setAnimateItem,
-            stats.current,
-            setCreatureColor
-          );
-        }}
-        buttonThreeClick={() => {
-          selectSound();
-          executeEventsRight(
-            currentSubMenu,
-            setAnimateItem,
-            setCurrentItem,
-            stats.current
-          );
-        }}
-        color={`hsl(${creatureColor + 42},100%,68%)`}
-      />
-    </>
+      </ConfigurationContext.Consumer>{" "}
+    </GameContext.Provider>
   );
 }
 export default Scene;

@@ -20,3 +20,130 @@
   width: 100vw;
   background-color: #000;
 }
+
+.ui{
+  backdrop-filter: blur(10px);
+  z-index: 100;
+  font-family: "Darumadrop One", serif;
+  font-weight: 400;
+  font-style: normal;
+  user-select: none;
+  height: 100%;
+}
+
+
+.ui-right{
+  z-index: 100;
+  font-family: "Darumadrop One", serif;
+  font-weight: 400;
+  font-style: normal;
+  user-select: none;
+  height: 100%;
+  width:auto;
+  position:fixed;
+  right:2vh;
+  bottom:2vh;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  flex-direction: column;
+  pointer-events: none;
+}
+
+.ui-row{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;  
+  font-size:3vh;
+  text-shadow: 1px 1px 10px rgba(0,0,0,0.4);
+}
+
+.ui-row-small{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;  
+  font-size:2vh;
+  text-shadow: 1px 1px 10px rgba(0,0,0,0.4);
+  color:#fff !important;
+}
+
+
+.ui-acknowledge{
+  backdrop-filter: blur(10px);
+  z-index: 100;
+  font-family: "Darumadrop One", serif;
+  font-weight: 400;
+  font-style: normal;
+  position: fixed;
+  bottom:0;
+  left:0;
+  font-size:2vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.ui-wrapper{
+  z-index: 100;
+  position:fixed;
+  top:0;
+  left:0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  user-select: none;
+  pointer-events: none;
+}
+
+.reset{
+  font-size: 2vh;
+  padding: 1vh;
+  border-radius: 5px;
+  background-color: #000;
+  color: #fff;
+  cursor: pointer;
+  margin: 1vh;
+  justify-self: center;
+  z-index: 100;
+  position:fixed;
+}
+
+.dead-text{
+  font-size: 3vh;
+  color: #fff;
+  text-shadow: 1px 1px 10px rgba(0,0,0,0.4);
+}
+
+
+.reset-button{
+  font-size: 4vh;
+  padding: 1vh 4vh;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  margin: 1vh;
+  z-index: 100;
+  backdrop-filter: blur(20px);
+  border: 1px solid #fff;
+  cursor: pointer;
+  z-index: 100;
+  pointer-events:auto;
+  transition: all 0.3s;
+}
+
+
+.reset-button:hover{
+
+  backdrop-filter: blur(10px);
+
+}
+
+
+
+.ui-href{
+  color:#fff
+}

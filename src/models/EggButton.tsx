@@ -1,7 +1,8 @@
 import * as THREE from "three";
 import gsap from "gsap";
-import { useRef } from "react";
+import { useRef, useMemo } from "react";
 import { Html } from "@react-three/drei";
+import { ConfigurationContext } from "../App";
 
 interface EggButtonProps {
   buttonClick: () => void;
@@ -17,34 +18,46 @@ function EggButton(props: EggButtonProps) {
   const rayOrigin = new THREE.Vector3(-3, 0, 0);
   const rayDirection = new THREE.Vector3(10, 0, 0);
   rayDirection.normalize();
-
   raycaster.set(rayOrigin, rayDirection);
 
   return (
     <group position={position}>
       <mesh
         ref={buttonMesh}
-        geometry={(model.children[0] as THREE.Mesh).geometry}
+        geometry={useMemo(
+          () => (model.children[0] as THREE.Mesh).geometry,
+          [model]
+        )}
         castShadow
         receiveShadow
-        onPointerEnter={() => console.log("hover")}
         onPointerDown={() => {
           if (buttonMesh.current) {
             gsap.to(buttonMesh.current.position, {
-              duration: 0.5,
+              duration: 0.2,
               delay: 0,
               y: -1,
             });
             gsap.to(buttonMesh.current.position, {
-              duration: 1,
-              delay: 0.5,
+              duration: 0.4,
+              delay: 0.2,
               y: 0,
             });
           }
           buttonClick();
         }}
       >
-        <meshStandardMaterial color="#000" metalness={0.3} roughness={1} />
+        <ConfigurationContext.Consumer>
+          {({ gameConfig }) => {
+            return (
+              <meshStandardMaterial
+                color="#444"
+                normalMap={gameConfig.buttonTextures.buttonNormal}
+                metalness={0.3}
+                roughness={1}
+              />
+            );
+          }}
+        </ConfigurationContext.Consumer>
       </mesh>
       <Html
         style={{

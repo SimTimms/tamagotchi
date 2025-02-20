@@ -53,16 +53,20 @@ function LCDBackgroundScreen(props: {
     setAnimFrame(0);
   }, [item]);
 
+  let scrollFrame = 0;
+
   useEffect(() => {
     function generateScreenPixels() {
       let useAnimFrame = animFrame;
       const pixelsA = [];
+
       if (!tamagotchiArray[item]) {
         useAnimFrame = 0;
       }
       if (!tamagotchiArray[item][animFrame]) {
         useAnimFrame = 0;
       }
+
       for (let i = 0; i < screenSize[0]; i++) {
         for (let j = 0; j < screenSize[1]; j++) {
           var thisRowArray = tamagotchiArray[item][useAnimFrame][i];
@@ -86,8 +90,8 @@ function LCDBackgroundScreen(props: {
             }
           }
 
-          let isActivated = thisRowArray[j] > 0;
-          let colorIndex = thisRowArray[j];
+          let isActivated = thisRowArray[j + 1] > 0;
+          let colorIndex = thisRowArray[j + 1];
 
           const material = materialArr[colorIndex];
 
@@ -106,22 +110,20 @@ function LCDBackgroundScreen(props: {
       setPixels(pixelsA);
     }
     generateScreenPixels();
-  }, [item, animFrame]);
+  }, [item, animFrame, scrollFrame]);
 
   useFrame((_, delta) => {
-    if (animateItem === true) {
-      newAnim += 2 * delta;
-
-      if (newAnim > 1) {
-        setAnimFrame((animFrame) => {
-          if (animFrame + 1 > tamagotchiArray[item].length - 1) {
-            return 0;
-          } else {
-            return animFrame + 1;
-          }
-        });
-        newAnim = 0;
-      }
+    newAnim += 2 * delta;
+    scrollFrame += 1 * delta;
+    if (newAnim > 1) {
+      setAnimFrame((animFrame) => {
+        if (animFrame + 1 > tamagotchiArray[item].length - 1) {
+          return 0;
+        } else {
+          return animFrame + 1;
+        }
+      });
+      newAnim = 0;
     }
   });
 

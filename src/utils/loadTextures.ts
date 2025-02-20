@@ -39,10 +39,23 @@ export const loadTextures = () => {
   eggTexture.colorSpace = THREE.SRGBColorSpace;
   const eggMetalTexture = TextureLoader.load("./textures/texture-metal.png");
   const eggRoughTexture = TextureLoader.load("./textures/texture-rough.png");
-
+  const buttonNormal = TextureLoader.load("./textures/button-normal.jpg");
+  const music = TextureLoader.load("./textures/music.png");
+  music.colorSpace = THREE.SRGBColorSpace;
+  const music2 = TextureLoader.load("./textures/music-2.png");
+  music2.colorSpace = THREE.SRGBColorSpace;
+  const sad = TextureLoader.load("./textures/sad.png");
+  sad.colorSpace = THREE.SRGBColorSpace;
+  const happy = TextureLoader.load("./textures/happy.png");
+  happy.colorSpace = THREE.SRGBColorSpace;
   return {
     eggTexture,
     eggMetalTexture,
     eggRoughTexture,
+    buttonNormal,
+    music,
+    music2,
+    sad,
+    happy,
   };
 };

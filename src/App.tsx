@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, createContext } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import "./app.css";
@@ -6,183 +6,184 @@ import Scene from "./Scene";
 import select2 from "./assets/sounds/loop-3.mp3";
 import clean from "./assets/sounds/clean.mp3";
 import creatureAttention from "./assets/sounds/creature-attention.mp3";
-import GUI from "lil-gui";
 import { Environment } from "@react-three/drei";
-
 import { loadTextures } from "./utils/loadTextures";
-export type GameConfig = {
-  eggColour: number;
-  ambientLight: number;
-  directionalLight: number;
-  directionalLightX: number;
-  directionalLightY: number;
-  directionalLightZ: number;
-  debugShowCreature: boolean;
-  debugShowBackground: boolean;
-  debugShowCanvasBackground: boolean;
-  debugShowItem: boolean;
-  showGlass: boolean;
-  showMenu: boolean;
-  bornAge: number;
-  isDead: boolean;
-};
+import defaultConfig, { defaultConfigStats } from "./defaultConfig";
+import { GameConfig } from "./defaultConfig";
+
+export const ConfigurationContext = createContext<{
+  gameConfig: typeof defaultConfig;
+  setGameConfig: React.Dispatch<React.SetStateAction<typeof defaultConfig>>;
+}>({
+  gameConfig: defaultConfig,
+  setGameConfig: () => {},
+});
 
 function App() {
-  const audioRef = useRef<HTMLAudioElement>(new Audio(select2));
+  const audioRef = useRef<HTMLAudioElement>(null);
   const audioRefClean = useRef<HTMLAudioElement>(new Audio(clean));
   const creatureAttentionRef = useRef<HTMLAudioElement>(
     new Audio(creatureAttention)
   );
 
-  const [gameConfig, setGameConfig] = useState({
-    eggColour: 10,
-    ambientLight: 0.4,
-    directionalLight: 4,
-    directionalLightX: 2,
-    directionalLightY: 3,
-    directionalLightZ: 3,
-    debugShowCreature: true,
-    debugShowBackground: true,
-    debugShowCanvasBackground: true,
-    debugShowItem: true,
-    showGlass: true,
-    showMenu: true,
-    bornAge: 7,
-    isDead: false,
-  });
-  const { eggTexture, eggMetalTexture, eggRoughTexture } = loadTextures();
+  const [gameConfig, setGameConfig] = useState<GameConfig>(defaultConfig);
+  const [resetState, setResetState] = useState<boolean>(false);
+
+  const handleReset = () => {
+    setResetState(true);
+    console.log("reset");
+    setGameConfig((gameConfig) => {
+      return { ...gameConfig, defaultConfigStats, isDead: false };
+    });
+  };
 
   useEffect(() => {
-    const gui = new GUI();
-    const eggFolder = gui.addFolder("Egg");
-    const lightFolder = gui.addFolder("Lighting");
-    const debugFolder = gui.addFolder("Debug");
-    debugFolder.add(gameConfig, "isDead").onChange((value: boolean) => {
-      setGameConfig({ ...gameConfig, isDead: value });
-    });
-    debugFolder.add(gameConfig, "showMenu").onChange((value: boolean) => {
-      setGameConfig({ ...gameConfig, showMenu: value });
-    });
-    debugFolder.add(gameConfig, "showGlass").onChange((value: boolean) => {
-      setGameConfig({ ...gameConfig, showGlass: value });
-    });
-    debugFolder
-      .add(gameConfig, "debugShowCreature")
-      .onChange((value: boolean) => {
-        setGameConfig({ ...gameConfig, debugShowCreature: value });
-      });
-    debugFolder
-      .add(gameConfig, "debugShowBackground")
-      .onChange((value: boolean) => {
-        setGameConfig({ ...gameConfig, debugShowBackground: value });
-      });
-    debugFolder
-      .add(gameConfig, "debugShowCanvasBackground")
-      .onChange((value: boolean) => {
-        setGameConfig({ ...gameConfig, debugShowCanvasBackground: value });
-      });
-    debugFolder.add(gameConfig, "debugShowItem").onChange((value: boolean) => {
-      setGameConfig({ ...gameConfig, debugShowItem: value });
-    });
-    eggFolder.addColor(gameConfig, "eggColour").onChange((value: number) => {
-      setGameConfig({ ...gameConfig, eggColour: value });
-    });
-    eggFolder
-      .add(gameConfig, "bornAge", 0, 50)
-      .step(1)
-      .onChange((value: number) => {
-        setGameConfig({ ...gameConfig, bornAge: value });
-      });
-    lightFolder
-      .add(gameConfig, "ambientLight", 0, 1)
-      .onChange((value: number) => {
-        setGameConfig({ ...gameConfig, ambientLight: value });
-      });
-    lightFolder
-      .add(gameConfig, "directionalLight", 0, 10)
-      .onChange((value: number) => {
-        setGameConfig({ ...gameConfig, directionalLight: value });
-      });
-    lightFolder
-      .add(gameConfig, "directionalLightX", -10, 10)
-      .onChange((value: number) => {
-        setGameConfig({ ...gameConfig, directionalLightX: value });
-      });
-    lightFolder
-      .add(gameConfig, "directionalLightY", -10, 10)
-      .onChange((value: number) => {
-        setGameConfig({ ...gameConfig, directionalLightY: value });
-      });
-    lightFolder
-      .add(gameConfig, "directionalLightZ", -10, 10)
-      .onChange((value: number) => {
-        setGameConfig({ ...gameConfig, directionalLightZ: value });
-      });
-  }, [audioRef]);
+    const loadAndSetTextures = async () => {
+      const {
+        eggTexture,
+        eggMetalTexture,
+        eggRoughTexture,
+        buttonNormal,
+        music,
+        music2,
+        sad,
+        happy,
+      } = await loadTextures();
+      if (eggTexture && eggMetalTexture && eggRoughTexture && buttonNormal) {
+        setGameConfig((prev) => ({
+          ...prev,
+          eggTextures: {
+            eggTexture: eggTexture,
+            eggMetalTexture: eggMetalTexture,
+            eggRoughTexture: eggRoughTexture,
+          },
+          buttonTextures: {
+            buttonNormal: buttonNormal,
+          },
+          particleTextures: {
+            musicOne: music,
+            musicTwo: music2,
+            isSad: sad,
+            isHappy: happy,
+          },
+        }));
+      }
+    };
 
-  const cleanSound = () => {
-    if (audioRefClean.current) {
-      audioRefClean.current.pause();
-      audioRefClean.current.currentTime = 0;
-      audioRefClean.current.volume = 0.5;
-      audioRefClean.current.play();
-    }
-  };
+    loadAndSetTextures();
+  }, []);
 
-  const selectSound = () => {
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
-      audioRef.current.volume = 0.5;
-      audioRef.current.play();
-    }
-  };
+  useEffect(() => {
+    const cleanSound = () => {
+      if (audioRefClean.current) {
+        audioRefClean.current.pause();
+        audioRefClean.current.currentTime = 0;
+        audioRefClean.current.volume = 0.5;
+        audioRefClean.current.play();
+      }
+    };
 
-  const creatureAttentionSound = () => {
-    if (creatureAttentionRef.current) {
-      creatureAttentionRef.current.pause();
-      creatureAttentionRef.current.currentTime = 0;
-      creatureAttentionRef.current.volume = 0.5;
-      creatureAttentionRef.current.play();
-    }
-  };
+    const selectSound = () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+        audioRef.current.volume = 0.5;
+        audioRef.current.play();
+      }
+    };
 
+    const creatureAttentionSound = () => {
+      if (creatureAttentionRef.current) {
+        creatureAttentionRef.current.pause();
+        creatureAttentionRef.current.currentTime = 0;
+        creatureAttentionRef.current.volume = 0.5;
+        creatureAttentionRef.current.play();
+      }
+    };
+    setGameConfig((prev) => ({
+      ...prev,
+      selectSound,
+      creatureAttentionSound,
+      cleanSound,
+    }));
+  }, []);
+
+  if (
+    !gameConfig.eggTextures.eggTexture ||
+    !gameConfig.eggTextures.eggMetalTexture ||
+    !gameConfig.eggTextures.eggRoughTexture ||
+    !gameConfig.buttonTextures.buttonNormal ||
+    !gameConfig.particleTextures.musicOne ||
+    !gameConfig.particleTextures.musicTwo ||
+    !gameConfig.particleTextures.isSad ||
+    !gameConfig.particleTextures.isHappy
+  ) {
+    return "Loading...";
+  }
   return (
     <div className="background">
-      <Canvas className="canvas" camera={{ position: [3, 3, 83] }} shadows>
-        <Environment
-          files={[
-            "./environment/px.png",
-            "./environment/nx.png",
-            "./environment/py.png",
-            "./environment/ny.png",
-            "./environment/pz.png",
-            "./environment/nz.png",
-          ]}
-          background={true}
-          blur={0.3}
-          backgroundIntensity={1.5}
-        />
-        <ambientLight intensity={gameConfig.ambientLight} />
-        <directionalLight
-          color="#fff"
-          position={[
-            gameConfig.directionalLightX,
-            gameConfig.directionalLightY,
-            gameConfig.directionalLightZ,
-          ]}
-          castShadow
-          intensity={gameConfig.directionalLight}
-        />
-        <Scene
-          selectSound={selectSound}
-          creatureAttention={creatureAttentionSound}
-          cleanSound={cleanSound}
-          config={gameConfig}
-          eggTextures={[eggTexture, eggMetalTexture, eggRoughTexture]}
-        />
-        <OrbitControls enablePan={false} enableZoom={false} maxZoom={1} />
-      </Canvas>
+      <audio ref={audioRef} src={select2} />
+      <audio ref={audioRefClean} src={clean} />
+      <audio ref={creatureAttentionRef} src={creatureAttention} />
+      <ConfigurationContext.Provider value={{ gameConfig, setGameConfig }}>
+        <Canvas className="canvas" camera={{ position: [3, 3, 83] }} shadows>
+          <Environment
+            files={[
+              "./environment/px.png",
+              "./environment/nx.png",
+              "./environment/py.png",
+              "./environment/ny.png",
+              "./environment/pz.png",
+              "./environment/nz.png",
+            ]}
+            background={true}
+            blur={0.3}
+            backgroundIntensity={1.5}
+          />
+          <ambientLight intensity={gameConfig.ambientLight} />
+          <directionalLight
+            color="#fff"
+            position={[
+              gameConfig.directionalLightX,
+              gameConfig.directionalLightY,
+              gameConfig.directionalLightZ,
+            ]}
+            castShadow
+            intensity={gameConfig.directionalLight}
+          />
+          <Scene resetState={resetState} setResetState={setResetState} />
+          <OrbitControls enablePan={false} enableZoom={false} maxZoom={1} />
+        </Canvas>
+      </ConfigurationContext.Provider>
+      {gameConfig.isDead && (
+        <div className="ui-wrapper">
+          <span className="dead-text">💀 Oh no! Your creature has died 💀</span>
+          <div
+            className="reset-button"
+            onClick={() => {
+              handleReset();
+            }}
+          >
+            RESET
+          </div>
+        </div>
+      )}
+
+      <div className="ui-right">
+        <a
+          href="https://www.linkedin.com/in/tim-simms-94404045/"
+          target="_blank"
+          rel="noreferrer"
+          className="ui-row-small"
+        >
+          <span>Tim Simms | React and Three.js Developer</span>
+        </a>
+        <span className="ui-row-small">
+          <span>
+            This is in development for the Three.js Journey Tamagotchi Challenge
+          </span>
+        </span>
+      </div>
     </div>
   );
 }

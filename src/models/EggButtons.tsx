@@ -1,4 +1,3 @@
-import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/Addons.js";
 import { useLoader } from "@react-three/fiber";
 import EggButton from "./EggButton";
@@ -9,15 +8,11 @@ interface EggButtonsProps {
   buttonThreeClick: () => void;
   color: string;
 }
+
 function EggButtons(props: EggButtonsProps) {
   const { buttonOneClick, buttonTwoClick, buttonThreeClick, color } = props;
   const button = useLoader(GLTFLoader, "./models/button.glb");
-  const raycaster = new THREE.Raycaster();
-  const rayOrigin = new THREE.Vector3(-3, 0, 0);
-  const rayDirection = new THREE.Vector3(10, 0, 0);
-  rayDirection.normalize();
 
-  raycaster.set(rayOrigin, rayDirection);
   return (
     <>
       {button.scene && (
@@ -52,4 +47,5 @@ function EggButtons(props: EggButtonsProps) {
     </>
   );
 }
+
 export default EggButtons;

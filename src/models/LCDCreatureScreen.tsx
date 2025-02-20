@@ -86,7 +86,12 @@ function LCDCreatureScreen(props: {
             let colorIndex = thisRowArray[j];
 
             if (materialArr.indexOf(colorIndex) === -1) {
-              if (colorIndex.toString().search("b") !== -1) {
+              if (colorIndex.toString().search("f") !== -1) {
+                materialArr[colorIndex] = new THREE.MeshStandardMaterial({
+                  color: `hsl(0,0%,100%)`,
+                  roughness: 0.1,
+                });
+              } else if (colorIndex.toString().search("b") !== -1) {
                 materialArr[colorIndex] = new THREE.MeshStandardMaterial({
                   color: `hsl(${creatureColor + 42},100%,${
                     colorIndex[1] * 10
@@ -122,7 +127,7 @@ function LCDCreatureScreen(props: {
 
   let newAnim = 0;
   useFrame((_, delta) => {
-    newAnim += 2 * delta;
+    newAnim += 5 * delta;
 
     if (newAnim > 1) {
       setAnimFrame((animFrame) => {

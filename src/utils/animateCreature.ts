@@ -24,7 +24,6 @@ export function animateCreature(
       creatureAttention();
     }
   } else if (stats.isDirty) {
-    console.log("isDirty");
     if (currentAnim !== "dirty") {
       setCurrentAnim("dirty");
       creatureAttention();

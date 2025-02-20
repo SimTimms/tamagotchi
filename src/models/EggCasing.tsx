@@ -3,14 +3,17 @@ import { GLTFLoader } from "three/examples/jsm/Addons.js";
 import { useLoader } from "@react-three/fiber";
 interface EggCasingProps {
   color: number;
-  eggTextures: [THREE.Texture, THREE.Texture, THREE.Texture];
+  eggTextures: [
+    THREE.Texture | null,
+    THREE.Texture | null,
+    THREE.Texture | null
+  ];
 }
 function EggCasing(props: EggCasingProps) {
   const { color, eggTextures } = props;
   const egg = useLoader(GLTFLoader, "./models/egg.glb");
   const hue = 41 + color;
 
-  console.log(egg.scene);
   const BoxMaterialDark = new THREE.MeshStandardMaterial({
     color: `hsl(${hue}, 100%, 68%)`,
     roughness: 1,

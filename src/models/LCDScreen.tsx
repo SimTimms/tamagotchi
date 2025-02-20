@@ -6,7 +6,7 @@ import LCDMenuScreenBottom from "./LCDMenuScreenBottom";
 import { loadIconTextures } from "../utils/loadTextures";
 import * as THREE from "three";
 import { StatsType } from "../Scene";
-import { GameConfig } from "../App";
+import { GameConfig } from "../defaultConfig";
 
 export type LCDIcons = {
   iconFood: THREE.Texture;
@@ -27,7 +27,7 @@ interface LCDSceenProps {
   currentMenu: number;
   animateItem: boolean;
   age: number;
-  stats: StatsType;
+  isSick: boolean;
   creatureColor: number;
   screenSize: number;
   config: GameConfig;
@@ -41,7 +41,7 @@ function LCDSceen(props: LCDSceenProps) {
     currentMenu,
     animateItem,
     age,
-    stats,
+    isSick,
     creatureColor,
     screenSize,
     config,
@@ -61,7 +61,7 @@ function LCDSceen(props: LCDSceenProps) {
             screenSize={screenSize}
             lightColor={lightColor}
             currentMenu={currentMenu}
-            isSick={stats.isSick}
+            isSick={isSick}
             backMaterial={`hsl(${creatureColor + 42},100%,68%)`}
           />
         </group>
