@@ -139,7 +139,7 @@ function App() {
       <audio ref={audioRefClean} src={clean} />
       <audio ref={creatureAttentionRef} src={creatureAttention} />
       <ConfigurationContext.Provider value={{ gameConfig, setGameConfig }}>
-        <Canvas className="canvas" camera={{ position: [3, 3, 83] }} shadows>
+        <Canvas className="canvas" camera={{ position: [3, 3, 83.1] }} shadows>
           <Perf position="top-right" />
           <Environment
             files={[
