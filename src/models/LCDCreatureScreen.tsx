@@ -102,6 +102,7 @@ function LCDCreatureScreen(props: {
 
           pixelsA.push(
             <mesh
+              key={`voxel-${count}`}
               ref={elementsRef.current[count]}
               geometry={BoxGeometry}
               scale={1}
