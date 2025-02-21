@@ -11,7 +11,7 @@ import { loadTextures, loadIconTextures } from "./utils/loadTextures";
 
 import defaultConfig, { defaultConfigStats } from "./defaultConfig";
 import { GameConfig } from "./defaultConfig";
-import { Perf } from "r3f-perf";
+//import { Perf } from "r3f-perf";
 export const ConfigurationContext = createContext<{
   gameConfig: typeof defaultConfig;
   setGameConfig: React.Dispatch<React.SetStateAction<typeof defaultConfig>>;
@@ -139,7 +139,7 @@ function App() {
       <audio ref={creatureAttentionRef} src={creatureAttention} />
       <ConfigurationContext.Provider value={{ gameConfig, setGameConfig }}>
         <Canvas className="canvas" camera={{ position: [3, 3, 83.1] }} shadows>
-          <Perf position="top-right" />
+          {/* <Perf position="top-right" />*/}
           {envMap && (
             <Environment
               files={[
