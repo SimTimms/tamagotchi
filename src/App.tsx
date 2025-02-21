@@ -164,6 +164,7 @@ function App() {
             castShadow
             intensity={gameConfig.directionalLight}
           />
+          <Scene resetState={resetState} setResetState={setResetState} />
           <OrbitControls enablePan={false} enableZoom={false} maxZoom={1} />
         </Canvas>
       </ConfigurationContext.Provider>
