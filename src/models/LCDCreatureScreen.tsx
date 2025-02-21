@@ -124,11 +124,18 @@ function LCDCreatureScreen(props: {
     }
 
     function updateAnimation() {
+      if (!animArray[currentAnim]) {
+        setAnimFrame(0);
+      }
+      let useAnimFrame = animFrame;
+      if (!animArray[currentAnim][useAnimFrame]) {
+        useAnimFrame = 0;
+      }
       let count: number = -1;
       for (let i = 0; i < screenSize; i++) {
         for (let j = 0; j < screenSize; j++) {
-          if (!animArray[currentAnim][animFrame]) return;
-          const thisRowArray = animArray[currentAnim][animFrame][i];
+          if (!animArray[currentAnim][useAnimFrame]) return;
+          const thisRowArray = animArray[currentAnim][useAnimFrame][i];
           if (!thisRowArray[j]) {
             return;
           }
@@ -183,6 +190,9 @@ function LCDCreatureScreen(props: {
 
   let newAnim = 0;
   useFrame((_, delta) => {
+    if (!animArray[currentAnim]) {
+      return;
+    }
     newAnim += 5 * delta;
 
     if (newAnim > 1) {
