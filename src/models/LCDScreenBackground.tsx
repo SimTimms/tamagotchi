@@ -14,6 +14,7 @@ function LCDScreenBackground(props: LCDScreenBackgroundProps) {
   const scale = 1;
   const screenSizeOffsetX = (screenSize[0] / 2) * scale;
   const screenSizeOffsetY = (screenSize[1] / 2) * scale;
+  console.log("LCDScreenBackground", screenSize, lightColor);
   return (
     <group
       position={[-screenSizeOffsetY + 0.5, screenSizeOffsetX - 4.9, 4]}
@@ -21,7 +22,13 @@ function LCDScreenBackground(props: LCDScreenBackgroundProps) {
     >
       <LCDBackgroundScreen
         screenSize={screenSize}
-        item={lightColor === "#f48bba" ? "desert" : "city"}
+        item={
+          lightColor === "#f48bba"
+            ? "desert"
+            : lightColor === "#555"
+            ? "rain"
+            : "city"
+        }
         animateItem={true}
       />
     </group>

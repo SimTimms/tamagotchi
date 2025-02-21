@@ -1,4 +1,4 @@
-import { VolumeOff, Volume2 } from "lucide-react";
+import { VolumeOff, Volume2, Gem } from "lucide-react";
 import { ConfigurationContext } from "./App";
 import { useEffect, useRef, useState } from "react";
 import Explosion from "./Explosion";
@@ -14,6 +14,7 @@ interface UIProps {
   isDirty: boolean;
   isHappy: boolean;
   isDead: boolean;
+  setEnvMap: any;
 }
 export default function UI(props: UIProps) {
   const {
@@ -26,6 +27,7 @@ export default function UI(props: UIProps) {
     isDirty,
     isHappy,
     isDead,
+    setEnvMap,
   } = props;
 
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -54,22 +56,39 @@ export default function UI(props: UIProps) {
               </>
             )}
 
-            <Html
-              style={{
-                marginLeft: "-50vw",
-                marginTop: "-48vh",
-                paddingLeft: "2vh",
-                height: "96vh",
-                width: "30vh",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-                alignItems: "space-between",
-              }}
-            >
+            <Html className="ui-html">
               <div className="ui">
-                <h1 style={{ fontSize: "4vh" }}>Tamagotchi</h1>
-                <h1 style={{ color: "#fff", fontSize: "4vh" }}>たまごっち</h1>
+                <div
+                  style={{
+                    position: "relative",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: "14vh",
+                  }}
+                >
+                  <h1
+                    style={{
+                      color: "#fff",
+                      fontSize: "8vh",
+                      position: "absolute",
+                    }}
+                  >
+                    たまごっち
+                  </h1>
+                  <h1
+                    style={{
+                      fontSize: "4vh",
+                      position: "absolute",
+                      top: 0,
+                      textShadow: "0 0 20px rgba(0,0,0,0.5)",
+                    }}
+                  >
+                    Tamagotchi Challenge
+                  </h1>
+                </div>
+
                 <div className="ui-row">
                   <span>Hunger:</span>
                   <span>{(100 - hunger).toFixed(0)}</span>
@@ -122,8 +141,16 @@ export default function UI(props: UIProps) {
                     bottom: 0,
                     left: 0,
                     cursor: "pointer",
+                    width: "100%",
                   }}
                 >
+                  <div className="ui-row-small">
+                    <Gem
+                      size={"4vh"}
+                      onClick={() => setEnvMap((envMap: boolean) => !envMap)}
+                    />
+                    Quality
+                  </div>
                   <div className="ui-row-small">
                     {isPlaying ? (
                       <Volume2

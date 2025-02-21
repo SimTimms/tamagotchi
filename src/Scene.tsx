@@ -21,7 +21,7 @@ import { ConfigurationContext } from "./App";
 import UI from "./UI";
 const cleanSpeed = 25;
 const healthSpeed = 1;
-const hungerThreshold = 85;
+const hungerThreshold = 55;
 const hungerSickThreshold = 63;
 
 export const GameContext = createContext<{
@@ -51,9 +51,10 @@ export type StatsType = {
 interface SceneProps {
   resetState: boolean;
   setResetState: React.Dispatch<React.SetStateAction<boolean>>;
+  setEnvMap: React.Dispatch<React.SetStateAction<boolean>>;
 }
 function Scene(props: SceneProps) {
-  const { resetState, setResetState } = props;
+  const { resetState, setResetState, setEnvMap } = props;
   const gameConfig = useContext(ConfigurationContext).gameConfig;
 
   const { selectSound, creatureAttentionSound, cleanSound, bornAge, isDead } =
@@ -449,6 +450,7 @@ function Scene(props: SceneProps) {
                 isDirty={stats.current.isDirty}
                 isHappy={!stats.current.isSad}
                 isDead={stats.current.dead}
+                setEnvMap={setEnvMap}
               />
 
               {memoScreen}

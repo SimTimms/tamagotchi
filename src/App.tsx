@@ -11,7 +11,7 @@ import { loadTextures, loadIconTextures } from "./utils/loadTextures";
 
 import defaultConfig, { defaultConfigStats } from "./defaultConfig";
 import { GameConfig } from "./defaultConfig";
-//import { Perf } from "r3f-perf";
+import { Perf } from "r3f-perf";
 export const ConfigurationContext = createContext<{
   gameConfig: typeof defaultConfig;
   setGameConfig: React.Dispatch<React.SetStateAction<typeof defaultConfig>>;
@@ -29,7 +29,7 @@ function App() {
 
   const [gameConfig, setGameConfig] = useState<GameConfig>(defaultConfig);
   const [resetState, setResetState] = useState<boolean>(false);
-
+  const [envMap, setEnvMap] = useState<boolean>(false);
   const handleReset = () => {
     setResetState(true);
     setGameConfig((gameConfig) => {
@@ -139,20 +139,22 @@ function App() {
       <audio ref={creatureAttentionRef} src={creatureAttention} />
       <ConfigurationContext.Provider value={{ gameConfig, setGameConfig }}>
         <Canvas className="canvas" camera={{ position: [3, 3, 83.1] }} shadows>
-          {/* <Perf position="top-right" />*/}
-          <Environment
-            files={[
-              "./environment/px.png",
-              "./environment/nx.png",
-              "./environment/py.png",
-              "./environment/ny.png",
-              "./environment/pz.png",
-              "./environment/nz.png",
-            ]}
-            background={true}
-            blur={0.3}
-            backgroundIntensity={1.5}
-          />
+          <Perf position="top-right" />
+          {envMap && (
+            <Environment
+              files={[
+                "./environment/px.png",
+                "./environment/nx.png",
+                "./environment/py.png",
+                "./environment/ny.png",
+                "./environment/pz.png",
+                "./environment/nz.png",
+              ]}
+              background={true}
+              blur={0.3}
+              backgroundIntensity={1.5}
+            />
+          )}
           <ambientLight intensity={gameConfig.ambientLight} />
           <directionalLight
             color="#fff"
@@ -164,7 +166,11 @@ function App() {
             castShadow
             intensity={gameConfig.directionalLight}
           />
-          <Scene resetState={resetState} setResetState={setResetState} />
+          <Scene
+            resetState={resetState}
+            setResetState={setResetState}
+            setEnvMap={setEnvMap}
+          />
           <OrbitControls enablePan={false} enableZoom={false} maxZoom={1} />
         </Canvas>
       </ConfigurationContext.Provider>

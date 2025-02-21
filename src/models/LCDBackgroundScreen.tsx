@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { useEffect, useState } from "react";
 import { useFrame } from "@react-three/fiber";
-import { city, desert } from "../data/backgrounds";
+import { city, desert, rain } from "../data/backgrounds";
 
 function LCDBackgroundScreen(props: {
   item: string;
@@ -18,6 +18,7 @@ function LCDBackgroundScreen(props: {
   const tamagotchiArray: { [key: string]: any[] } = {
     city: city(),
     desert: desert(),
+    rain: rain(),
   };
 
   const BoxGeometry = new THREE.BoxGeometry(1, 1, 1, 1);
@@ -114,7 +115,6 @@ function LCDBackgroundScreen(props: {
 
   useFrame((_, delta) => {
     newAnim += 2 * delta;
-    scrollFrame += 1 * delta;
     if (newAnim > 1) {
       setAnimFrame((animFrame) => {
         if (animFrame + 1 > tamagotchiArray[item].length - 1) {
