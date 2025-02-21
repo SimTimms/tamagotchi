@@ -7,10 +7,11 @@ import select2 from "./assets/sounds/loop-3.mp3";
 import clean from "./assets/sounds/clean.mp3";
 import creatureAttention from "./assets/sounds/creature-attention.mp3";
 import { Environment } from "@react-three/drei";
-import { loadTextures } from "./utils/loadTextures";
+import { loadTextures, loadIconTextures } from "./utils/loadTextures";
+
 import defaultConfig, { defaultConfigStats } from "./defaultConfig";
 import { GameConfig } from "./defaultConfig";
-
+import { Perf } from "r3f-perf";
 export const ConfigurationContext = createContext<{
   gameConfig: typeof defaultConfig;
   setGameConfig: React.Dispatch<React.SetStateAction<typeof defaultConfig>>;
@@ -49,6 +50,19 @@ function App() {
         sad,
         happy,
       } = await loadTextures();
+
+      const {
+        iconFood,
+        iconLight,
+        iconSkull,
+        iconInject,
+        iconDuck,
+        iconTape,
+        iconChat,
+        iconHeart,
+        iconGame,
+      } = loadIconTextures();
+
       if (eggTexture && eggMetalTexture && eggRoughTexture && buttonNormal) {
         setGameConfig((prev) => ({
           ...prev,
@@ -65,6 +79,17 @@ function App() {
             musicTwo: music2,
             isSad: sad,
             isHappy: happy,
+          },
+          iconTextures: {
+            iconFood,
+            iconLight,
+            iconSkull,
+            iconInject,
+            iconDuck,
+            iconTape,
+            iconChat,
+            iconHeart,
+            iconGame,
           },
         }));
       }
@@ -108,18 +133,6 @@ function App() {
     }));
   }, []);
 
-  if (
-    !gameConfig.eggTextures.eggTexture ||
-    !gameConfig.eggTextures.eggMetalTexture ||
-    !gameConfig.eggTextures.eggRoughTexture ||
-    !gameConfig.buttonTextures.buttonNormal ||
-    !gameConfig.particleTextures.musicOne ||
-    !gameConfig.particleTextures.musicTwo ||
-    !gameConfig.particleTextures.isSad ||
-    !gameConfig.particleTextures.isHappy
-  ) {
-    return "Loading...";
-  }
   return (
     <div className="background">
       <audio ref={audioRef} src={select2} />
@@ -127,6 +140,7 @@ function App() {
       <audio ref={creatureAttentionRef} src={creatureAttention} />
       <ConfigurationContext.Provider value={{ gameConfig, setGameConfig }}>
         <Canvas className="canvas" camera={{ position: [3, 3, 83] }} shadows>
+          <Perf position="top-right" />
           <Environment
             files={[
               "./environment/px.png",

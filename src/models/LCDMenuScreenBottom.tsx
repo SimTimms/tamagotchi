@@ -1,15 +1,17 @@
 import * as THREE from "three";
-import { LCDIcons } from "./LCDScreen";
+import { useContext } from "react";
+import { ConfigurationContext } from "../App";
 
 interface LCDMenuScreenBottomProps {
-  icons: LCDIcons;
   screenSize: number;
   currentMenu: number;
   backMaterial: string;
 }
 
 function LCDMenuScreenBottom(props: LCDMenuScreenBottomProps) {
-  const { icons, screenSize, currentMenu, backMaterial } = props;
+  const { screenSize, currentMenu, backMaterial } = props;
+  const gameConfig = useContext(ConfigurationContext).gameConfig;
+  const icons = gameConfig.iconTextures;
 
   const BoxGeometry = new THREE.PlaneGeometry(0.14, 0.14);
 
@@ -39,6 +41,8 @@ function LCDMenuScreenBottom(props: LCDMenuScreenBottomProps) {
     transparent: true,
     opacity: currentMenu === 7 ? 1 : 0.3,
   });
+
+  console.log("icons", icons);
 
   return (
     <group scale={screenSize}>

@@ -32,6 +32,17 @@ export type GameConfig = {
     isHappy: THREE.Texture | null;
   };
   models: { eggModel: any; buttonModel: any };
+  iconTextures: {
+    iconFood: THREE.Texture | null;
+    iconLight: THREE.Texture | null;
+    iconSkull: THREE.Texture | null;
+    iconInject: THREE.Texture | null;
+    iconDuck: THREE.Texture | null;
+    iconTape: THREE.Texture | null;
+    iconChat: THREE.Texture | null;
+    iconHeart: THREE.Texture | null;
+    iconGame: THREE.Texture | null;
+  };
 };
 
 export const defaultConfigStats = {
@@ -67,6 +78,17 @@ export const defaultConfigStats = {
     isHappy: null,
   },
   models: { eggModel: null, buttonModel: null },
+  iconTextures: {
+    iconFood: null,
+    iconLight: null,
+    iconSkull: null,
+    iconInject: null,
+    iconDuck: null,
+    iconTape: null,
+    iconChat: null,
+    iconHeart: null,
+    iconGame: null,
+  },
 };
 
 const defaultConfigAssets = {

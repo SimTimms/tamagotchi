@@ -1,7 +1,8 @@
 import * as THREE from "three";
-import { LCDIcons } from "./LCDScreen";
+import { useContext } from "react";
+import { ConfigurationContext } from "../App";
+
 interface LCDMenuScreenProps {
-  icons: LCDIcons;
   screenSize: number;
   lightColor: string;
   currentMenu: number;
@@ -10,8 +11,9 @@ interface LCDMenuScreenProps {
 }
 
 function LCDMenuScreen(props: LCDMenuScreenProps) {
-  const { icons, screenSize, currentMenu, isSick, backMaterial } = props;
-
+  const { screenSize, currentMenu, isSick, backMaterial } = props;
+  const gameConfig = useContext(ConfigurationContext).gameConfig;
+  const icons = gameConfig.iconTextures;
   const BoxGeometry = new THREE.PlaneGeometry(0.14, 0.14);
 
   const foodMaterialActive = new THREE.MeshStandardMaterial({
