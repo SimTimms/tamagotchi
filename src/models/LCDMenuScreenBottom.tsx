@@ -42,8 +42,6 @@ function LCDMenuScreenBottom(props: LCDMenuScreenBottomProps) {
     opacity: currentMenu === 7 ? 1 : 0.3,
   });
 
-  console.log("icons", icons);
-
   return (
     <group scale={screenSize}>
       <mesh

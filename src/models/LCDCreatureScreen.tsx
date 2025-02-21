@@ -83,16 +83,10 @@ function LCDCreatureScreen(props: {
           count++;
           const thisRowArray = animArray[currentAnim][useAnimFrame][i];
           if (thisRowArray.length < screenSize) {
-            console.log(
-              "too short by",
-              screenSize - thisRowArray.length,
-              thisRowArray
-            );
             for (let a = 0; a < screenSize - thisRowArray.length; a++) {
               thisRowArray.push("00");
             }
           }
-          console.log("exit", thisRowArray.length);
           //Fill blanks
           if (animArray[currentAnim][useAnimFrame].length < screenSize) {
             for (
