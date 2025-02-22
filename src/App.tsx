@@ -32,6 +32,7 @@ function App() {
   const [gameConfig, setGameConfig] = useState<GameConfig>(defaultConfig);
   const [resetState, setResetState] = useState<boolean>(false);
   const [envMap, setEnvMap] = useState<boolean>(true);
+  const [autoRotate, setAutoRotate] = useState<boolean>(true);
   const handleReset = () => {
     setResetState(true);
     setGameConfig((gameConfig) => {
@@ -171,6 +172,7 @@ function App() {
     <div
       className="background"
       style={{ backgroundImage: `url(${backgroundImage})` }}
+      onClick={() => setAutoRotate(false)}
     >
       <audio ref={audioRef} src={select2} />
       <audio ref={audioRefClean} src={clean} />
@@ -246,6 +248,7 @@ function App() {
             setResetState={setResetState}
             setEnvMap={setEnvMap}
             envMap={envMap}
+            setAutoRotate={setAutoRotate}
           />
           <OrbitControls
             enablePan={false}
@@ -253,6 +256,7 @@ function App() {
             maxZoom={1}
             minPolarAngle={Math.PI / 3}
             maxPolarAngle={Math.PI - Math.PI / 3}
+            autoRotate={autoRotate}
           />
         </Canvas>
       </ConfigurationContext.Provider>

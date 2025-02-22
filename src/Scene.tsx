@@ -55,14 +55,14 @@ interface SceneProps {
   setResetState: React.Dispatch<React.SetStateAction<boolean>>;
   setEnvMap: React.Dispatch<React.SetStateAction<boolean>>;
   envMap: boolean;
+  setAutoRotate: React.Dispatch<React.SetStateAction<boolean>>;
 }
 function Scene(props: SceneProps) {
-  const { resetState, setResetState, setEnvMap, envMap } = props;
-  const gameConfig = useContext(ConfigurationContext).gameConfig;
+  const { resetState, setResetState, setEnvMap, envMap, setAutoRotate } = props;
+  const { gameConfig, setGameConfig } = useContext(ConfigurationContext);
 
   const { selectSound, creatureAttentionSound, cleanSound, bornAge, isDead } =
     gameConfig;
-
   const [currentAnim, setCurrentAnim] = useState<string>("happy");
   const [animateItem, setAnimateItem] = useState<boolean>(false);
   const [currentItem, setCurrentItem] = useState<string>("blank");
@@ -208,6 +208,8 @@ function Scene(props: SceneProps) {
   function setDead() {
     if (stats.current.health <= 0 && !stats.current.dead) {
       stats.current.dead = true;
+      setGameConfig((prev) => ({ ...prev, isDead: true }));
+      setAutoRotate(true);
       setAction("isDead");
       setCurrentItem("blank");
     }
