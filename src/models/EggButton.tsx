@@ -59,30 +59,6 @@ function EggButton(props: EggButtonProps) {
           }}
         </ConfigurationContext.Consumer>
       </mesh>
-      <Html
-        style={{
-          color: "#aaa",
-          fontSize: "2vh",
-          top: 30,
-          width: "10vh",
-          left: "-5vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          flexDirection: "column",
-        }}
-      >
-        <div style={{ border: "1px solid #000", height: "10vh" }}></div>
-        <div
-          style={{
-            paddingRight: 10,
-            color: "#000",
-            textShadow: "2px 2px 5px rgba(0,0,0,0.6)",
-          }}
-        >
-          {label}
-        </div>
-      </Html>
     </group>
   );
 }

@@ -172,7 +172,6 @@ function App() {
     <div
       className="background"
       style={{ backgroundImage: `url(${backgroundImage})` }}
-      onClick={() => setAutoRotate(false)}
     >
       <audio ref={audioRef} src={select2} />
       <audio ref={audioRefClean} src={clean} />
@@ -249,6 +248,7 @@ function App() {
             setEnvMap={setEnvMap}
             envMap={envMap}
             setAutoRotate={setAutoRotate}
+            autoRotate={autoRotate}
           />
           <OrbitControls
             enablePan={false}

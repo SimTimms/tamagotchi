@@ -56,9 +56,17 @@ interface SceneProps {
   setEnvMap: React.Dispatch<React.SetStateAction<boolean>>;
   envMap: boolean;
   setAutoRotate: React.Dispatch<React.SetStateAction<boolean>>;
+  autoRotate: boolean;
 }
 function Scene(props: SceneProps) {
-  const { resetState, setResetState, setEnvMap, envMap, setAutoRotate } = props;
+  const {
+    resetState,
+    setResetState,
+    setEnvMap,
+    envMap,
+    setAutoRotate,
+    autoRotate,
+  } = props;
   const { gameConfig, setGameConfig } = useContext(ConfigurationContext);
 
   const { selectSound, creatureAttentionSound, cleanSound, bornAge, isDead } =
@@ -459,6 +467,8 @@ function Scene(props: SceneProps) {
                 isDead={stats.current.dead}
                 setEnvMap={setEnvMap}
                 envMap={envMap}
+                autoRotate={autoRotate}
+                setAutoRotate={setAutoRotate}
               />
 
               {memoScreen}

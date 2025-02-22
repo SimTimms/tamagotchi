@@ -1,4 +1,4 @@
-import { VolumeOff, Volume2, Gem } from "lucide-react";
+import { VolumeOff, Volume2, Gem, RotateCw } from "lucide-react";
 import { ConfigurationContext } from "./App";
 import { useEffect, useRef, useState } from "react";
 import Explosion from "./Explosion";
@@ -16,6 +16,8 @@ interface UIProps {
   isDead: boolean;
   setEnvMap: any;
   envMap: boolean;
+  setAutoRotate: any;
+  autoRotate: boolean;
 }
 export default function UI(props: UIProps) {
   const {
@@ -30,6 +32,8 @@ export default function UI(props: UIProps) {
     isDead,
     setEnvMap,
     envMap,
+    setAutoRotate,
+    autoRotate,
   } = props;
 
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -148,33 +152,31 @@ export default function UI(props: UIProps) {
                 >
                   <div
                     className="ui-row-small"
+                    onClick={() =>
+                      setAutoRotate((autoRotate: boolean) => !autoRotate)
+                    }
+                  >
+                    <RotateCw size={"4vh"} />
+                    {`${autoRotate ? "Disable" : "Enable"} Rotate`}
+                  </div>
+                  <div
+                    className="ui-row-small"
                     onClick={() => setEnvMap((envMap: boolean) => !envMap)}
                   >
                     <Gem size={"4vh"} />
                     {`${envMap ? "Disable" : "Enable"} Environment`}
                   </div>
-                  <div className="ui-row-small">
+                  <div
+                    className="ui-row-small"
+                    onClick={() => setIsPlaying((isPlaying) => !isPlaying)}
+                  >
                     {isPlaying ? (
-                      <Volume2
-                        onClick={() => setIsPlaying((isPlaying) => !isPlaying)}
-                        size={"4vh"}
-                      />
+                      <Volume2 size={"4vh"} />
                     ) : (
-                      <VolumeOff
-                        onClick={() => setIsPlaying((isPlaying) => !isPlaying)}
-                        size={"4vh"}
-                      />
+                      <VolumeOff size={"4vh"} />
                     )}
-                    {isPlaying && (
-                      <a
-                        href="https://pixabay.com/music/video-games-8-bit-dream-land-142093/"
-                        className="ui-href"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        Music by moodmode
-                      </a>
-                    )}
+
+                    {`${isPlaying ? "Disable" : "Enable"}   Music by moodmode`}
                   </div>
                 </div>
               </div>
