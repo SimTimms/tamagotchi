@@ -15,6 +15,7 @@ interface UIProps {
   isHappy: boolean;
   isDead: boolean;
   setEnvMap: any;
+  envMap: boolean;
 }
 export default function UI(props: UIProps) {
   const {
@@ -28,6 +29,7 @@ export default function UI(props: UIProps) {
     isHappy,
     isDead,
     setEnvMap,
+    envMap,
   } = props;
 
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -144,12 +146,12 @@ export default function UI(props: UIProps) {
                     width: "100%",
                   }}
                 >
-                  <div className="ui-row-small">
-                    <Gem
-                      size={"4vh"}
-                      onClick={() => setEnvMap((envMap: boolean) => !envMap)}
-                    />
-                    Quality
+                  <div
+                    className="ui-row-small"
+                    onClick={() => setEnvMap((envMap: boolean) => !envMap)}
+                  >
+                    <Gem size={"4vh"} />
+                    {`${envMap ? "Disable" : "Enable"} Environment`}
                   </div>
                   <div className="ui-row-small">
                     {isPlaying ? (

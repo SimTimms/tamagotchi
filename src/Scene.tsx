@@ -54,9 +54,10 @@ interface SceneProps {
   resetState: boolean;
   setResetState: React.Dispatch<React.SetStateAction<boolean>>;
   setEnvMap: React.Dispatch<React.SetStateAction<boolean>>;
+  envMap: boolean;
 }
 function Scene(props: SceneProps) {
-  const { resetState, setResetState, setEnvMap } = props;
+  const { resetState, setResetState, setEnvMap, envMap } = props;
   const gameConfig = useContext(ConfigurationContext).gameConfig;
 
   const { selectSound, creatureAttentionSound, cleanSound, bornAge, isDead } =
@@ -455,6 +456,7 @@ function Scene(props: SceneProps) {
                 isHappy={!stats.current.isSad}
                 isDead={stats.current.dead}
                 setEnvMap={setEnvMap}
+                envMap={envMap}
               />
 
               {memoScreen}

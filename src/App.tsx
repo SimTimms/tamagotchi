@@ -30,7 +30,7 @@ function App() {
 
   const [gameConfig, setGameConfig] = useState<GameConfig>(defaultConfig);
   const [resetState, setResetState] = useState<boolean>(false);
-  const [envMap, setEnvMap] = useState<boolean>(false);
+  const [envMap, setEnvMap] = useState<boolean>(true);
   const handleReset = () => {
     setResetState(true);
     setGameConfig((gameConfig) => {
@@ -226,7 +226,6 @@ function App() {
                 "./environment/py.png",
                 "./environment/py.png",
               ]}
-              background={true}
               blur={0.2}
             />
           )}
@@ -245,6 +244,7 @@ function App() {
             resetState={resetState}
             setResetState={setResetState}
             setEnvMap={setEnvMap}
+            envMap={envMap}
           />
           <OrbitControls enablePan={false} enableZoom={false} maxZoom={1} />
         </Canvas>
