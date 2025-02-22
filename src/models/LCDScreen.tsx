@@ -44,7 +44,7 @@ function LCDSceen(props: LCDSceenProps) {
             lightColor={lightColor}
             currentMenu={currentMenu}
             isSick={isSick}
-            backMaterial={`hsl(${creatureColor + 42},100%,68%)`}
+            backMaterial={`hsl(${creatureColor + 42},40%,68%)`}
           />
         </group>
       )}
@@ -70,7 +70,7 @@ function LCDSceen(props: LCDSceenProps) {
           <LCDMenuScreenBottom
             screenSize={screenSize}
             currentMenu={currentMenu}
-            backMaterial={`hsl(${creatureColor + 42},100%,68%)`}
+            backMaterial={`hsl(${creatureColor + 42},40%,68%)`}
           />
         </group>
       )}

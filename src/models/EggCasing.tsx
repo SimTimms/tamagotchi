@@ -6,6 +6,8 @@ interface EggCasingProps {
   eggTextures: [
     THREE.Texture | null,
     THREE.Texture | null,
+    THREE.Texture | null,
+    THREE.Texture | null,
     THREE.Texture | null
   ];
 }
@@ -15,12 +17,17 @@ function EggCasing(props: EggCasingProps) {
   const hue = 41 + color;
 
   const BoxMaterialDark = new THREE.MeshStandardMaterial({
-    color: `hsl(${hue}, 100%, 68%)`,
-    roughness: 1,
+    color: `hsl(${hue}, 40%, 68%)`,
     map: eggTextures[0],
-    metalnessMap: eggTextures[1],
-    metalness: 0.01,
-    roughnessMap: eggTextures[2],
+    metalness: 0.1,
+    roughness: 0.1,
+  });
+
+  const BoxMaterialFlowers = new THREE.MeshStandardMaterial({
+    map: eggTextures[1],
+    transparent: true,
+    roughness: 1,
+    roughnessMap: eggTextures[4],
   });
 
   const BoxMaterialContrast = new THREE.MeshStandardMaterial({
@@ -40,14 +47,19 @@ function EggCasing(props: EggCasingProps) {
             geometry={(egg.scene.children[0] as THREE.Mesh).geometry}
             castShadow
             receiveShadow
-            material={BoxMaterialDark}
+            material={BoxMaterialContrast}
           ></mesh>
           <mesh
             geometry={(egg.scene.children[1] as THREE.Mesh).geometry}
             castShadow
             receiveShadow
-            material={BoxMaterialContrast}
-          ></mesh>
+          >
+            <meshStandardMaterial
+              color={"#000"}
+              metalness={0}
+              roughness={0.5}
+            />
+          </mesh>
           <mesh
             geometry={(egg.scene.children[2] as THREE.Mesh).geometry}
             castShadow
@@ -59,6 +71,17 @@ function EggCasing(props: EggCasingProps) {
               roughness={0.5}
             />
           </mesh>
+          <mesh
+            geometry={(egg.scene.children[3] as THREE.Mesh).geometry}
+            castShadow
+            receiveShadow
+            material={BoxMaterialDark}
+          ></mesh>
+          <mesh
+            geometry={(egg.scene.children[4] as THREE.Mesh).geometry}
+            material={BoxMaterialFlowers}
+            scale={1.01}
+          ></mesh>
         </group>
       )}
     </>

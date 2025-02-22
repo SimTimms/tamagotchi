@@ -35,8 +35,22 @@ export const loadIconTextures = () => {
 };
 
 export const loadTextures = () => {
-  const eggTexture = TextureLoader.load("./textures/texture.png");
+  const treeTexture = TextureLoader.load("./textures/tree.png");
+  treeTexture.colorSpace = THREE.SRGBColorSpace;
+  const floorAlpha = TextureLoader.load("./textures/floor-alpha.jpg");
+  const floorTexture = TextureLoader.load("./textures/floor.jpg");
+  floorTexture.colorSpace = THREE.SRGBColorSpace;
+  const eggTexture = TextureLoader.load("./textures/egg-diffuse.jpg");
+  eggTexture.flipY = false;
   eggTexture.colorSpace = THREE.SRGBColorSpace;
+  const eggTextureOverlay = TextureLoader.load(
+    "./textures/egg-diffuse-overlay.png"
+  );
+  eggTextureOverlay.flipY = false;
+  eggTextureOverlay.colorSpace = THREE.SRGBColorSpace;
+  const eggMetalOverlay = TextureLoader.load(
+    "./textures/egg-metal-overlay.jpg"
+  );
   const eggMetalTexture = TextureLoader.load("./textures/texture-metal.png");
   const eggRoughTexture = TextureLoader.load("./textures/texture-rough.png");
   const buttonNormal = TextureLoader.load("./textures/button-normal.jpg");
@@ -50,6 +64,7 @@ export const loadTextures = () => {
   happy.colorSpace = THREE.SRGBColorSpace;
   return {
     eggTexture,
+    eggTextureOverlay,
     eggMetalTexture,
     eggRoughTexture,
     buttonNormal,
@@ -57,5 +72,9 @@ export const loadTextures = () => {
     music2,
     sad,
     happy,
+    eggMetalOverlay,
+    treeTexture,
+    floorTexture,
+    floorAlpha,
   };
 };

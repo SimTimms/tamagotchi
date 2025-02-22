@@ -8,10 +8,11 @@ import clean from "./assets/sounds/clean.mp3";
 import creatureAttention from "./assets/sounds/creature-attention.mp3";
 import { Environment } from "@react-three/drei";
 import { loadTextures, loadIconTextures } from "./utils/loadTextures";
-
 import defaultConfig, { defaultConfigStats } from "./defaultConfig";
 import { GameConfig } from "./defaultConfig";
-//import { Perf } from "r3f-perf";
+import { Perf } from "r3f-perf";
+import backgroundImage from "./assets/background.jpg";
+import * as THREE from "three";
 export const ConfigurationContext = createContext<{
   gameConfig: typeof defaultConfig;
   setGameConfig: React.Dispatch<React.SetStateAction<typeof defaultConfig>>;
@@ -41,6 +42,8 @@ function App() {
     const loadAndSetTextures = async () => {
       const {
         eggTexture,
+        eggTextureOverlay,
+        eggMetalOverlay,
         eggMetalTexture,
         eggRoughTexture,
         buttonNormal,
@@ -48,6 +51,9 @@ function App() {
         music2,
         sad,
         happy,
+        treeTexture,
+        floorTexture,
+        floorAlpha,
       } = await loadTextures();
 
       const {
@@ -62,11 +68,23 @@ function App() {
         iconGame,
       } = loadIconTextures();
 
-      if (eggTexture && eggMetalTexture && eggRoughTexture && buttonNormal) {
+      if (
+        eggTexture &&
+        eggTextureOverlay &&
+        eggMetalOverlay &&
+        eggMetalTexture &&
+        eggRoughTexture &&
+        buttonNormal
+      ) {
         setGameConfig((prev) => ({
           ...prev,
+          treeTexture,
+          floorTexture,
+          floorAlpha,
           eggTextures: {
             eggTexture: eggTexture,
+            eggMetalOverlay: eggMetalOverlay,
+            eggTextureOverlay: eggTextureOverlay,
             eggMetalTexture: eggMetalTexture,
             eggRoughTexture: eggRoughTexture,
           },
@@ -132,27 +150,84 @@ function App() {
     }));
   }, []);
 
+  const treeMaterial = new THREE.MeshStandardMaterial({
+    map: gameConfig.treeTexture,
+    transparent: true,
+    depthWrite: false,
+    opacity: 0.4,
+  });
+
+  const floorMaterial = new THREE.MeshStandardMaterial({
+    map: gameConfig.floorTexture,
+    alphaMap: gameConfig.floorAlpha,
+    transparent: true,
+    opacity: 0.4,
+    depthWrite: false,
+  });
+
+  const bgScale = 10;
   return (
-    <div className="background">
+    <div
+      className="background"
+      style={{ backgroundImage: `url(${backgroundImage})` }}
+    >
       <audio ref={audioRef} src={select2} />
       <audio ref={audioRefClean} src={clean} />
       <audio ref={creatureAttentionRef} src={creatureAttention} />
       <ConfigurationContext.Provider value={{ gameConfig, setGameConfig }}>
-        <Canvas className="canvas" camera={{ position: [3, 3, 83.1] }} shadows>
-          {/* <Perf position="top-right" />*/}
+        <Canvas
+          className="canvas"
+          camera={{ position: [3, 3, 83.1], far: 1400 }}
+          shadows
+        >
+          <Perf position="top-right" />
+          <group scale={50}>
+            <mesh
+              geometry={new THREE.PlaneGeometry(bgScale * 5, bgScale * 5)}
+              position={[0, -7, 0]}
+              material={floorMaterial}
+              rotation={[-Math.PI / 2, 0, 0]}
+            ></mesh>
+            <mesh
+              geometry={new THREE.BoxGeometry(0.1, 10, 10)}
+              position={[-bgScale, 0, -1]}
+              material={treeMaterial}
+            ></mesh>
+            <mesh
+              geometry={new THREE.BoxGeometry(0.1, 10, 10)}
+              position={[-bgScale, 0, -bgScale]}
+              rotation={[0, Math.PI / 1.5, 0]}
+              material={treeMaterial}
+            ></mesh>
+            <mesh
+              geometry={new THREE.BoxGeometry(0.1, 10, 10)}
+              position={[bgScale, 0, -bgScale]}
+              rotation={[0, -Math.PI / 1.5, 0]}
+              material={treeMaterial}
+            ></mesh>
+            <mesh
+              geometry={new THREE.BoxGeometry(0.1, 10, 10)}
+              position={[bgScale, 0, -1]}
+              material={treeMaterial}
+            ></mesh>
+            <mesh
+              geometry={new THREE.BoxGeometry(10, 10, 0.1)}
+              position={[0, 0, -bgScale]}
+              material={treeMaterial}
+            ></mesh>
+          </group>
           {envMap && (
             <Environment
               files={[
-                "./environment/px.png",
-                "./environment/nx.png",
                 "./environment/py.png",
-                "./environment/ny.png",
-                "./environment/pz.png",
-                "./environment/nz.png",
+                "./environment/py.png",
+                "./environment/py.png",
+                "./environment/py.png",
+                "./environment/py.png",
+                "./environment/py.png",
               ]}
               background={true}
-              blur={0.3}
-              backgroundIntensity={1.5}
+              blur={0.2}
             />
           )}
           <ambientLight intensity={gameConfig.ambientLight} />

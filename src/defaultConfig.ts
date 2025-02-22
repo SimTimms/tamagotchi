@@ -17,8 +17,13 @@ export type GameConfig = {
   selectSound: () => void;
   creatureAttentionSound: () => void;
   cleanSound: () => void;
+  treeTexture: THREE.Texture | null;
+  floorTexture: THREE.Texture | null;
+  floorAlpha: THREE.Texture | null;
   eggTextures: {
     eggTexture: THREE.Texture | null;
+    eggTextureOverlay: THREE.Texture | null;
+    eggMetalOverlay: THREE.Texture | null;
     eggMetalTexture: THREE.Texture | null;
     eggRoughTexture: THREE.Texture | null;
   };
@@ -47,7 +52,7 @@ export type GameConfig = {
 
 export const defaultConfigStats = {
   eggColour: 10,
-  ambientLight: 0.4,
+  ambientLight: 1,
   directionalLight: 4,
   directionalLightX: 2,
   directionalLightY: 3,
@@ -63,8 +68,13 @@ export const defaultConfigStats = {
   selectSound: () => null,
   creatureAttentionSound: () => null,
   cleanSound: () => null,
+  treeTexture: null,
+  floorTexture: null,
+  floorAlpha: null,
   eggTextures: {
     eggTexture: null,
+    eggTextureOverlay: null,
+    eggMetalOverlay: null,
     eggMetalTexture: null,
     eggRoughTexture: null,
   },
@@ -94,6 +104,8 @@ export const defaultConfigStats = {
 const defaultConfigAssets = {
   eggTextures: {
     eggTexture: null,
+    eggTextureOverlay: null,
+    eggMetalOverlay: null,
     eggMetalTexture: null,
     eggRoughTexture: null,
   },

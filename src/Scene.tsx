@@ -19,10 +19,12 @@ import { animateCreature } from "./utils/animateCreature";
 import { screenColors } from "./utils/screenColors";
 import { ConfigurationContext } from "./App";
 import UI from "./UI";
+
 const cleanSpeed = 25;
 const healthSpeed = 1;
 const hungerThreshold = 55;
 const hungerSickThreshold = 63;
+const dirtyThreshold = 40;
 
 export const GameContext = createContext<{
   gameContext: StatsType | null;
@@ -161,7 +163,8 @@ function Scene(props: SceneProps) {
 
   function setSickness() {
     const isGettingSick =
-      stats.current.cleanliness < 70 && stats.current.action !== "isInjecting";
+      stats.current.cleanliness < dirtyThreshold &&
+      stats.current.action !== "isInjecting";
 
     if (isGettingSick && !stats.current.isSick) {
       stats.current.isSick = true;
@@ -216,7 +219,7 @@ function Scene(props: SceneProps) {
   }
 
   function setDirty() {
-    const isDirty = stats.current.cleanliness < 40;
+    const isDirty = stats.current.cleanliness < dirtyThreshold;
     if (isDirty) {
       stats.current.isDirty = true;
     }
@@ -231,7 +234,8 @@ function Scene(props: SceneProps) {
   function injectAction(delta: number) {
     const isInjecting = stats.current.action === "isInjecting";
     const finishedInjecting = stats.current.health >= 100 && isInjecting;
-    const canInject = stats.current.isSick && currentItem !== "poop";
+    const canInject =
+      stats.current.isSick && currentItem !== "poop" && !stats.current.isHungry;
     if (finishedInjecting) {
       stats.current.isSick = false;
       setCurrentItem("blank");
@@ -467,7 +471,9 @@ function Scene(props: SceneProps) {
                 color={creatureColor}
                 eggTextures={[
                   gameConfig.eggTextures.eggTexture || null,
+                  gameConfig.eggTextures.eggTextureOverlay || null,
                   gameConfig.eggTextures.eggMetalTexture || null,
+                  gameConfig.eggTextures.eggMetalOverlay || null,
                   gameConfig.eggTextures.eggRoughTexture || null,
                 ]}
               />
