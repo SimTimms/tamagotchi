@@ -10,9 +10,10 @@ import { Environment } from "@react-three/drei";
 import { loadTextures, loadIconTextures } from "./utils/loadTextures";
 import defaultConfig, { defaultConfigStats } from "./defaultConfig";
 import { GameConfig } from "./defaultConfig";
-import { Perf } from "r3f-perf";
+//import { Perf } from "r3f-perf";
 import backgroundImage from "./assets/background.jpg";
 import * as THREE from "three";
+
 export const ConfigurationContext = createContext<{
   gameConfig: typeof defaultConfig;
   setGameConfig: React.Dispatch<React.SetStateAction<typeof defaultConfig>>;
@@ -180,7 +181,7 @@ function App() {
           camera={{ position: [3, 3, 83.1], far: 1400 }}
           shadows
         >
-          <Perf position="top-right" />
+          {/*<Perf position="top-right" />*/}
           <group scale={50}>
             <mesh
               geometry={new THREE.PlaneGeometry(bgScale * 5, bgScale * 5)}
@@ -246,7 +247,13 @@ function App() {
             setEnvMap={setEnvMap}
             envMap={envMap}
           />
-          <OrbitControls enablePan={false} enableZoom={false} maxZoom={1} />
+          <OrbitControls
+            enablePan={false}
+            enableZoom={false}
+            maxZoom={1}
+            minPolarAngle={Math.PI / 3}
+            maxPolarAngle={Math.PI - Math.PI / 3}
+          />
         </Canvas>
       </ConfigurationContext.Provider>
       {gameConfig.isDead && (
