@@ -1,4 +1,3 @@
-import { VolumeOff, Volume2, Gem, RotateCw } from "lucide-react";
 import { ConfigurationContext } from "./App";
 import { useEffect, useRef, useState } from "react";
 import Explosion from "./Explosion";
@@ -39,7 +38,6 @@ export default function UI(props: UIProps) {
 
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const isMobile = useMediaQuery("(max-width: 600px)");
 
   useEffect(() => {
     if (audioRef.current && audioRef.current.paused) {
