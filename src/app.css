@@ -24,15 +24,50 @@
   background-color: #000;
 }
 
+
 .ui{
-  backdrop-filter: blur(10px);
   z-index: 100;
   font-family: "Darumadrop One", serif;
   font-weight: 400;
   font-style: normal;
   user-select: none;
-  height: 100vh;
-  height: 100dvh;
+  padding-top:10dvh;
+  padding-top:10vh;
+}
+
+.ui-title-wrapper{
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height:10vh
+
+}
+
+.ui-title-text{
+  color: #fff;
+  font-size: 6dvh;
+  position: relative; 
+  font-family: "Darumadrop One", serif;
+  display: flex;
+}
+
+.ui-title-text-back{
+  font-size: 3dvh;
+  position: absolute; font-family: "Darumadrop One", serif;
+  text-shadow: 0 0 20px rgba(0,0,0,0.5);
+  display: flex;
+}
+
+
+.row-icon{display: flex;}
+.alert-icon{
+  font-size: 2vh;
+  color: #fff;
+  text-shadow: 1px 1px 10px rgba(0,0,0,0.4);
+  position: absolute;
+  right: -3vh;
 }
 
 
@@ -42,16 +77,20 @@
   font-weight: 400;
   font-style: normal;
   user-select: none;
-  height: 100%;
+  font-size:2vh;
   width:auto;
   position:fixed;
+  right:2dvh;
   right:2vh;
-  bottom:2vh;
+  top:2dvh;
+  top:2vh;
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
   flex-direction: column;
-  pointer-events: none;
+  text-align: right;
+  color:#fff !important;
+  text-shadow: 4px 4px 10px rgba(0,0,0,0.6);
 }
 
 .ui-row{
@@ -61,8 +100,10 @@
   font-size:3vh;
   text-shadow: 1px 1px 10px rgba(0,0,0,0.4);
   width: 100%;
+  position: relative;
   
 }
+
 
 .ui-row-small{
   display: flex;
@@ -74,6 +115,15 @@
   width: 100%;
 }
 
+.ui-row-small-icon{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;  
+  font-size:2vh;
+  text-shadow: 1px 1px 10px rgba(0,0,0,0.4);
+  color:#fff !important;
+  padding:20px;
+}
 
 .ui-acknowledge{
   backdrop-filter: blur(10px);
@@ -164,11 +214,12 @@
   padding-left: 2dvh;
   height: 96vh !important;
   height: 96dvh !important;
-  width: 30vh;
-  width: 30dvh;
+  width: 14vh;
+  width: 14dvh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: space-between;
   position: relative;
 }
+

@@ -163,7 +163,7 @@ function Scene(props: SceneProps) {
 
   function setHealth(delta: number) {
     const isSick = stats.current.isSick;
-    if (isSick) {
+    if (isSick && stats.current.health > 0) {
       return stats.current.health - delta * statSpeed * healthSpeed;
     }
 

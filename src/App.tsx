@@ -173,6 +173,10 @@ function App() {
       className="background"
       style={{ backgroundImage: `url(${backgroundImage})` }}
     >
+      <div className="ui-title-wrapper">
+        <h1 className="ui-title-text">たまごっち</h1>
+        <h1 className="ui-title-text-back">Tamagotchi Challenge</h1>
+      </div>
       <audio ref={audioRef} src={select2} />
       <audio ref={audioRefClean} src={clean} />
       <audio ref={creatureAttentionRef} src={creatureAttention} />
@@ -191,30 +195,30 @@ function App() {
               rotation={[-Math.PI / 2, 0, 0]}
             ></mesh>
             <mesh
-              geometry={new THREE.BoxGeometry(0.1, 10, 10)}
-              position={[-bgScale, 0, -1]}
+              geometry={new THREE.BoxGeometry(0.01, 4, 4)}
+              position={[-bgScale, -3, -1]}
               material={treeMaterial}
             ></mesh>
             <mesh
-              geometry={new THREE.BoxGeometry(0.1, 10, 10)}
-              position={[-bgScale, 0, -bgScale]}
+              geometry={new THREE.BoxGeometry(0.01, 4, 4)}
+              position={[-bgScale, -3, -bgScale]}
               rotation={[0, Math.PI / 1.5, 0]}
               material={treeMaterial}
             ></mesh>
             <mesh
-              geometry={new THREE.BoxGeometry(0.1, 10, 10)}
-              position={[bgScale, 0, -bgScale]}
+              geometry={new THREE.BoxGeometry(0.01, 4, 4)}
+              position={[bgScale, -3, -bgScale]}
               rotation={[0, -Math.PI / 1.5, 0]}
               material={treeMaterial}
             ></mesh>
             <mesh
-              geometry={new THREE.BoxGeometry(0.1, 10, 10)}
-              position={[bgScale, 0, -1]}
+              geometry={new THREE.BoxGeometry(0.01, 4, 4)}
+              position={[bgScale, -3, -1]}
               material={treeMaterial}
             ></mesh>
             <mesh
-              geometry={new THREE.BoxGeometry(10, 10, 0.1)}
-              position={[0, 0, -bgScale]}
+              geometry={new THREE.BoxGeometry(4, 4, 0.01)}
+              position={[0, -3, -bgScale]}
               material={treeMaterial}
             ></mesh>
           </group>
@@ -275,18 +279,20 @@ function App() {
       )}
 
       <div className="ui-right">
+        <span style={{ color: "rgba(255,255,255,1)" }}>Tim Simms</span>
+        <span style={{ color: "rgba(255,255,255,1)" }}>
+          React and Three.js Developer
+        </span>
         <a
           href="https://www.linkedin.com/in/tim-simms-94404045/"
           target="_blank"
           rel="noreferrer"
-          className="ui-row-small"
+          style={{ color: "rgba(255,255,255,1)" }}
         >
-          <span>Tim Simms | React and Three.js Developer</span>
+          <span>Message Me on LinkedIn</span>
         </a>
-        <span className="ui-row-small">
-          <span>
-            This is in development for the Three.js Journey Tamagotchi Challenge
-          </span>
+        <span style={{ color: "rgba(255,255,255,1)" }}>
+          tim-simms@hotmail.com
         </span>
       </div>
     </div>

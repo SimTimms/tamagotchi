@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import gsap from "gsap";
 import { useRef, useMemo } from "react";
+//import { Html } from "@react-three/drei";
 import { ConfigurationContext } from "../App";
 
 interface EggButtonProps {
@@ -11,7 +12,7 @@ interface EggButtonProps {
   color: string;
 }
 function EggButton(props: EggButtonProps) {
-  const { buttonClick, model, position } = props;
+  const { buttonClick, model, position, label } = props;
   const buttonMesh = useRef<THREE.Mesh>(null);
   const raycaster = new THREE.Raycaster();
   const rayOrigin = new THREE.Vector3(-3, 0, 0);
@@ -58,6 +59,31 @@ function EggButton(props: EggButtonProps) {
           }}
         </ConfigurationContext.Consumer>
       </mesh>
+      {/*
+      <Html
+        style={{
+          color: "#aaa",
+          fontSize: "2vh",
+          top: 30,
+          width: "10vh",
+          left: "-5vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+        }}
+      >
+        <div style={{ border: "1px solid #000", height: "10vh" }}></div>
+        <div
+          style={{
+            paddingRight: 10,
+            color: "#000",
+            textShadow: "2px 2px 5px rgba(0,0,0,0.6)",
+          }}
+        >
+          {label}
+        </div>
+      </Html>*/}
     </group>
   );
 }
