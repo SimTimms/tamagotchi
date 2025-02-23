@@ -2,7 +2,6 @@ import { ConfigurationContext } from "./App";
 import { useEffect, useRef, useState } from "react";
 import Explosion from "./Explosion";
 import { Html } from "@react-three/drei";
-import { useMediaQuery } from "usehooks-ts";
 
 interface UIProps {
   hunger: number;
