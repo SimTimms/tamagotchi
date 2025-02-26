@@ -195,7 +195,11 @@ function Scene(props: SceneProps) {
   }
 
   function countDownHappiness(delta: number) {
-    if (stats.current.action !== "isPlaying" && stats.current.stage > 0) {
+    if (
+      stats.current.action !== "isPlaying" &&
+      stats.current.stage > 0 &&
+      stats.current.happiness > 0
+    ) {
       return stats.current.happiness - delta * statSpeed;
     }
     return stats.current.happiness;
