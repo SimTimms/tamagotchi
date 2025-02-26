@@ -64,17 +64,19 @@ export function executeEventsCentre(
     setCurrentItem("blank");
   } else {
     if (currentMenu === 0) {
-      if (currentSubMenu === 0 && stats.poop < 100) {
+      if (currentSubMenu === 0 && stats.poop < 100 && stats.action === "none") {
         setCurrentSubMenu(1);
         scrollItems(setCurrentItem, -1, stats);
       } else if (currentSubMenu === 1) {
         setAnimateItem(true);
         setCurrentSubMenu(0);
-        setCurrentItem("blank");
         stats.action = "isFeeding";
       }
     } else if (currentMenu === 1) {
       changeLightColor(setLightColor, screenColours);
+      stats.action === "isSleeping"
+        ? (stats.action = "none")
+        : (stats.action = "isSleeping");
     } else if (currentMenu === 2 && stats.action === "none") {
       stats.action = "isPlaying";
     } else if (currentMenu === 3 && stats.action === "none") {

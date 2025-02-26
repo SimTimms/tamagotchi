@@ -93,9 +93,10 @@ export default function UI(props: UIProps) {
                     bottom: 0,
                     left: 0,
                     cursor: "pointer",
-                    width: "100%",
-                    height: "10vh",
+                    width: "20vw",
                     display: "flex",
+                    flexWrap: "wrap",
+                    justifyContent: "flex-start",
                   }}
                 >
                   <div

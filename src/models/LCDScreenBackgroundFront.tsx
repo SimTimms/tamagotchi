@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { useEffect, useState } from "react";
 import { useFrame } from "@react-three/fiber";
-import { tree, night, flowersDay, flowersNight } from "../data/backgrounds";
+import { flowersDay, flowersNight } from "../data/backgrounds";
 
 function LCDBackgroundScreen(props: {
   item: string;
@@ -16,8 +16,6 @@ function LCDBackgroundScreen(props: {
   const blankRow = new Array(screenSize[0]).fill(0);
 
   const tamagotchiArray: { [key: string]: any[] } = {
-    tree: tree(),
-    night: night(),
     flowersDay: flowersDay(),
     flowersNight: flowersNight(),
   };

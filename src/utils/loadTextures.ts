@@ -62,6 +62,8 @@ export const loadTextures = () => {
   sad.colorSpace = THREE.SRGBColorSpace;
   const happy = TextureLoader.load("./textures/happy.png");
   happy.colorSpace = THREE.SRGBColorSpace;
+  const playTexture = TextureLoader.load("./textures/play.png");
+  playTexture.colorSpace = THREE.SRGBColorSpace;
   return {
     eggTexture,
     eggTextureOverlay,
@@ -75,6 +77,7 @@ export const loadTextures = () => {
     eggMetalOverlay,
     treeTexture,
     floorTexture,
+    playTexture,
     floorAlpha,
   };
 };

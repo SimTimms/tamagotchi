@@ -13,14 +13,22 @@ export function animateCreature(
       setCurrentAnim("dead");
       creatureAttention();
     }
+  } else if (stats.action === "isSleeping") {
+    if (currentAnim !== "sleeping") {
+      setCurrentAnim("sleeping");
+    }
+  } else if (stats.action === "isFeeding") {
+    if (currentAnim !== "eating") {
+      setCurrentAnim("eating");
+    }
   } else if (stats.isSick) {
     if (currentAnim !== "sick") {
       setCurrentAnim("sick");
       creatureAttention();
     }
   } else if (stats.isStarving) {
-    if (currentAnim !== "sick") {
-      setCurrentAnim("sick");
+    if (currentAnim !== "hungry") {
+      setCurrentAnim("hungry");
       creatureAttention();
     }
   } else if (stats.isDirty) {

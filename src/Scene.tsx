@@ -24,7 +24,8 @@ const cleanSpeed = 25;
 const healthSpeed = 1;
 const hungerThreshold = 55;
 const hungerSickThreshold = 63;
-const dirtyThreshold = 40;
+const dirtyThreshold = 70;
+const dirtySickThreshold = 40;
 
 export const GameContext = createContext<{
   gameContext: StatsType | null;
@@ -38,6 +39,7 @@ export type StatsType = {
   happiness: number;
   cleanliness: number;
   age: number;
+  stage: number;
   favouriteFood: string;
   wantsItem: boolean;
   poop: number;
@@ -58,6 +60,7 @@ interface SceneProps {
   setAutoRotate: React.Dispatch<React.SetStateAction<boolean>>;
   autoRotate: boolean;
 }
+
 function Scene(props: SceneProps) {
   const {
     resetState,
@@ -76,7 +79,6 @@ function Scene(props: SceneProps) {
   const [currentItem, setCurrentItem] = useState<string>("blank");
   const [currentMenu, setCurrentMenu] = useState<number>(0);
   const [currentSubMenu, setCurrentSubMenu] = useState<number>(0);
-  const [stage, setStage] = useState<number>(0);
   const [lightColor, setLightColor] = useState<string>(screenColors[0]);
   const [creatureColor, setCreatureColor] = useState<number>(0);
   const [time, setTime] = useState<number>(0);
@@ -88,6 +90,7 @@ function Scene(props: SceneProps) {
     cleanliness: 100,
     poop: 0,
     age: 0,
+    stage: 0,
     favouriteFood: "pizza",
     wantsItem: false,
     action: "none",
@@ -103,6 +106,7 @@ function Scene(props: SceneProps) {
 
   useEffect(() => {
     if (resetState) {
+      console.log("resetting");
       stats.current = {
         health: 100,
         hunger: 100,
@@ -110,6 +114,7 @@ function Scene(props: SceneProps) {
         cleanliness: 100,
         poop: 0,
         age: 0,
+        stage: 0,
         favouriteFood: "pizza",
         wantsItem: false,
         action: "none",
@@ -120,7 +125,6 @@ function Scene(props: SceneProps) {
         isSad: false,
         dead: false,
       };
-      setStage(0);
       setCurrentItem("blank");
       setCurrentMenu(0);
       setCurrentSubMenu(0);
@@ -140,30 +144,25 @@ function Scene(props: SceneProps) {
     }
   }, [isDead]);
 
-  function increasePoop(amount: number) {
-    stats.current.poop = stats.current.poop + amount;
-  }
-
   function hatch() {
-    setStage(1);
+    stats.current.stage = 1;
     creatureAttentionSound();
   }
 
   function setToHatch() {
-    if (stats.current.age > bornAge && stage === 0) {
+    if (stats.current.age > bornAge && stats.current.stage === 0) {
       hatch();
     }
   }
 
   function setToPoop() {
-    if (stats.current.poop >= 100 && stage === 1) {
+    if (stats.current.poop >= 100 && stats.current.stage === 1) {
       setCurrentItem("poop");
     }
   }
 
   function setHealth(delta: number) {
-    const isSick = stats.current.isSick;
-    if (isSick && stats.current.health > 0) {
+    if (stats.current.isSick && stats.current.health > 0) {
       return stats.current.health - delta * statSpeed * healthSpeed;
     }
 
@@ -172,7 +171,7 @@ function Scene(props: SceneProps) {
 
   function setSickness() {
     const isGettingSick =
-      stats.current.cleanliness < dirtyThreshold &&
+      stats.current.cleanliness < dirtySickThreshold &&
       stats.current.action !== "isInjecting";
 
     if (isGettingSick && !stats.current.isSick) {
@@ -190,13 +189,13 @@ function Scene(props: SceneProps) {
   }
 
   function countDownHunger(delta: number) {
-    return stats.current.age > bornAge
+    return stats.current.stage > 0 && !stats.current.isStarving
       ? stats.current.hunger - delta * statSpeed
       : 100;
   }
 
   function countDownHappiness(delta: number) {
-    if (stats.current.action !== "isPlaying") {
+    if (stats.current.action !== "isPlaying" && stats.current.stage > 0) {
       return stats.current.happiness - delta * statSpeed;
     }
     return stats.current.happiness;
@@ -231,7 +230,7 @@ function Scene(props: SceneProps) {
 
   function setDirty() {
     const isDirty = stats.current.cleanliness < dirtyThreshold;
-    if (isDirty) {
+    if (isDirty && stats.current.isDirty === false) {
       stats.current.isDirty = true;
     }
   }
@@ -296,21 +295,30 @@ function Scene(props: SceneProps) {
     }
   }
 
-  function feedAction() {
-    stats.current = {
-      ...stats.current,
-      hunger: 100,
-      isHungry: false,
-      wantsItem: false,
-      isStarving: false,
-    };
-    increasePoop(30);
-    setAction("none");
-    setToPoop();
+  function feedAction(delta: number) {
+    const isFeeding = stats.current.action === "isFeeding";
+    const finishedEating = stats.current.hunger >= 100 && isFeeding;
+
+    const canFeed = stats.current.poop < 100 && stats.current.stage > 0;
+    if (finishedEating) {
+      setCurrentItem("blank");
+      cleanSound();
+      setAnimateItem(false);
+      setAction("none");
+      stats.current.isHungry = false;
+      stats.current.isStarving = false;
+      stats.current.poop += 25;
+      setToPoop();
+    } else if (canFeed) {
+      stats.current.hunger = stats.current.hunger + delta * statSpeed * 10;
+    } else if (isFeeding && !canFeed) {
+      setAction("none");
+    }
   }
 
   function playingAction(delta: number) {
     const isPlaying = stats.current.action === "isPlaying";
+
     const finishedPlaying = stats.current.happiness >= 100 && isPlaying;
     const canPlay =
       stats.current.happiness < 100 &&
@@ -363,7 +371,7 @@ function Scene(props: SceneProps) {
     } else if (stats.current.action === "isInjecting") {
       injectAction(delta);
     } else if (stats.current.action === "isFeeding") {
-      feedAction();
+      feedAction(delta);
     } else if (stats.current.action === "isPlaying") {
       playingAction(delta);
     } else if (stats.current.action === "isChatting") {
@@ -376,14 +384,11 @@ function Scene(props: SceneProps) {
       return 0;
     }
     if (stats.current.age > bornAge) {
-      const isClean = stats.current.cleanliness > 0;
       const isPooped =
         stats.current.cleanliness > 0 && stats.current.poop >= 100;
 
       if (isPooped) {
-        return stats.current.cleanliness - delta * statSpeed;
-      } else if (isClean) {
-        return stats.current.cleanliness - delta * statSpeed * 2;
+        return stats.current.cleanliness - delta * statSpeed * 3;
       }
     }
     return stats.current.cleanliness;
@@ -430,7 +435,7 @@ function Scene(props: SceneProps) {
         lightColor={lightColor}
         currentMenu={currentMenu}
         animateItem={animateItem}
-        age={stage}
+        age={stats.current.stage}
         isSick={stats.current.isSick}
         creatureColor={creatureColor}
         screenSize={32}
@@ -443,7 +448,7 @@ function Scene(props: SceneProps) {
       lightColor,
       currentMenu,
       animateItem,
-      stage,
+      stats.current.stage,
       stats.current.isSick,
       creatureColor,
       gameConfig,

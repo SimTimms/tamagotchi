@@ -5,6 +5,18 @@
   height:100vh
 }
 
+.canvas-scroll{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh !important;
+  height: 100dvh !important;
+  width: 200vw !important;
+  margin-left:-50%;
+  overflow: hidden;
+  transition: all 0.3s;
+
+}
 .canvas{
   display: flex;
   justify-content: center;
@@ -12,6 +24,15 @@
   height: 100vh !important;
   height: 100dvh !important;
   width: 100vw !important;
+}
+.canvas-welcome{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh !important;
+  height: 100dvh !important;
+  width: 100vw !important;
+  z-index: 100 !important;
 }
 
 .background{
@@ -116,13 +137,17 @@
 }
 
 .ui-row-small-icon{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;  
-  font-size:2vh;
+  
+  font-size:1.8vh;
   text-shadow: 1px 1px 10px rgba(0,0,0,0.4);
   color:#fff !important;
-  padding:20px;
+  padding:1vh;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 2vh;
+  margin:1vh;
+  width:100%;
+  text-align: center;
+  box-shadow: inset 10px 10px 10px rgba(255,255,255,0.3), 10px 10px 10px rgba(0,0,0,0.1);
 }
 
 .ui-acknowledge{
@@ -139,6 +164,22 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
+}
+
+.welcome-wrapper{
+  z-index: 100;
+  position:fixed;
+  top:0;
+  left:0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  backdrop-filter: blur(20px);
+  transition: all 0.3s;
 }
 
 .ui-wrapper{
@@ -182,9 +223,7 @@
   padding: 1vh 4vh;
   border-radius: 5px;
   color: #fff;
-  cursor: pointer;
   margin: 1vh;
-  z-index: 100;
   backdrop-filter: blur(20px);
   border: 1px solid #fff;
   cursor: pointer;

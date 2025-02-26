@@ -3,7 +3,7 @@ import LCDItemScreen from "./LCDItemScreen";
 import LCDGlass from "./LCDGlass";
 import LCDMenuScreen from "./LCDMenuScreen";
 import LCDMenuScreenBottom from "./LCDMenuScreenBottom";
-import { GameConfig } from "../defaultConfig";
+import { GameConfigFull } from "../defaultConfig";
 
 interface LCDSceenProps {
   currentAnim: string;
@@ -15,7 +15,7 @@ interface LCDSceenProps {
   isSick: boolean;
   creatureColor: number;
   screenSize: number;
-  config: GameConfig;
+  config: GameConfigFull;
 }
 
 function LCDSceen(props: LCDSceenProps) {
@@ -48,14 +48,16 @@ function LCDSceen(props: LCDSceenProps) {
           />
         </group>
       )}
-      <group position={[0, -13, -0.8]}>
+      <group position={[0, -13, -6]}>
         {config.debugShowCreature && (
-          <LCDCreatureScreen
-            screenSize={screenSize}
-            currentAnim={currentAnim}
-            age={age}
-            creatureColor={creatureColor}
-          />
+          <group position={[4, 2, 0]}>
+            <LCDCreatureScreen
+              screenSize={screenSize}
+              currentAnim={currentAnim}
+              age={age}
+              creatureColor={creatureColor}
+            />
+          </group>
         )}
         {config.debugShowItem && (
           <LCDItemScreen

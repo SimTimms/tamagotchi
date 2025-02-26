@@ -28,6 +28,8 @@ function LCDCreatureScreen(props: {
       chatting,
       sick,
       dirty,
+      sleeping,
+      eating,
     } = creatureAnimations(age);
 
     setAnimArray({
@@ -41,6 +43,8 @@ function LCDCreatureScreen(props: {
       chatting: chatting,
       sick: sick,
       dirty: dirty,
+      sleeping: sleeping,
+      eating: eating,
     });
   }, [age, screenSize]);
 
@@ -107,7 +111,6 @@ function LCDCreatureScreen(props: {
               geometry={BoxGeometry}
               scale={1}
               position={[j, -i, isActivated ? 0 : -0.4]}
-              castShadow={isActivated ? true : false}
               material={blankMaterial}
             ></mesh>
           );
@@ -151,9 +154,15 @@ function LCDCreatureScreen(props: {
                 color: `hsl(0,0%,100%)`,
                 roughness: 0.1,
               });
+            } else if (colorIndex.toString().search("h") !== -1) {
+              const hue = colorIndex.replace("h", "");
+              materialArr[colorIndex] = new THREE.MeshStandardMaterial({
+                color: `hsl(${hue + 42},50%,50%)`,
+                roughness: 0.1,
+              });
             } else if (colorIndex.toString().search("b") !== -1) {
               materialArr[colorIndex] = new THREE.MeshStandardMaterial({
-                color: `hsl(${creatureColor + 42},100%,${colorIndex[1] * 10}%)`,
+                color: `hsl(${creatureColor + 42},60%,${colorIndex[1] * 10}%)`,
                 roughness: 0.1,
               });
             } else {
@@ -207,6 +216,6 @@ function LCDCreatureScreen(props: {
     }
   });
 
-  return <group position={[4, 2, 1]}>{pixels}</group>;
+  return <group position={[0, 0, 0]}>{pixels}</group>;
 }
 export default LCDCreatureScreen;

@@ -1,7 +1,6 @@
 import * as THREE from "three";
 import gsap from "gsap";
 import { useRef, useMemo } from "react";
-//import { Html } from "@react-three/drei";
 import { ConfigurationContext } from "../App";
 
 interface EggButtonProps {
@@ -50,7 +49,7 @@ function EggButton(props: EggButtonProps) {
           {({ gameConfig }) => {
             return (
               <meshStandardMaterial
-                color="#444"
+                color="#222"
                 normalMap={gameConfig.buttonTextures.buttonNormal}
                 metalness={0.3}
                 roughness={1}
@@ -59,31 +58,6 @@ function EggButton(props: EggButtonProps) {
           }}
         </ConfigurationContext.Consumer>
       </mesh>
-      {/*
-      <Html
-        style={{
-          color: "#aaa",
-          fontSize: "2vh",
-          top: 30,
-          width: "10vh",
-          left: "-5vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          flexDirection: "column",
-        }}
-      >
-        <div style={{ border: "1px solid #000", height: "10vh" }}></div>
-        <div
-          style={{
-            paddingRight: 10,
-            color: "#000",
-            textShadow: "2px 2px 5px rgba(0,0,0,0.6)",
-          }}
-        >
-          {label}
-        </div>
-      </Html>*/}
     </group>
   );
 }
