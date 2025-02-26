@@ -189,9 +189,11 @@ function Scene(props: SceneProps) {
   }
 
   function countDownHunger(delta: number) {
-    return stats.current.stage > 0 && !stats.current.isStarving
-      ? stats.current.hunger - delta * statSpeed
-      : 100;
+    return (
+      stats.current.stage > 0 &&
+      !stats.current.isStarving &&
+      stats.current.hunger - delta * statSpeed
+    );
   }
 
   function countDownHappiness(delta: number) {
