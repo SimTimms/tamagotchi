@@ -106,7 +106,6 @@ function Scene(props: SceneProps) {
 
   useEffect(() => {
     if (resetState) {
-      console.log("resetting");
       stats.current = {
         health: 100,
         hunger: 100,
@@ -165,6 +164,9 @@ function Scene(props: SceneProps) {
     if (stats.current.isSick && stats.current.health > 0) {
       return stats.current.health - delta * statSpeed * healthSpeed;
     }
+    if (stats.current.isStarving && stats.current.health > 0) {
+      return stats.current.health - delta * statSpeed * healthSpeed;
+    }
 
     return stats.current.health;
   }
@@ -175,6 +177,10 @@ function Scene(props: SceneProps) {
       stats.current.action !== "isInjecting";
 
     if (isGettingSick && !stats.current.isSick) {
+      stats.current.isSick = true;
+    }
+
+    if (stats.current.health < 50 && !stats.current.isSick) {
       stats.current.isSick = true;
     }
   }
