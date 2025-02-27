@@ -117,7 +117,7 @@ export default function UI(props: UIProps) {
                     className="ui-row-small-icon"
                     onClick={() => setEnvMap((envMap: boolean) => !envMap)}
                   >
-                    {`${envMap ? "Disable" : "Enable"} Environment`}
+                    {`Improve ${envMap ? "Performance" : "Visuals"}`}
                   </div>
                 </div>
               </div>

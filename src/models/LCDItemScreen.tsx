@@ -176,7 +176,6 @@ function LCDItemScreen(props: {
                 geometry={BoxGeometry}
                 scale={1}
                 position={[j, -i, isActivated ? 0 : -0.4]}
-                castShadow={isActivated ? true : false}
                 material={material}
               ></mesh>
             );
