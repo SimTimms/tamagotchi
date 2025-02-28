@@ -181,7 +181,7 @@ function App() {
     >
       <div className="ui-title-wrapper">
         <h1 className="ui-title-text">たまごっち</h1>
-        <h1 className="ui-title-text-back">Timagotchi Challenge</h1>
+        <h1 className="ui-title-text-back">Tama-not-chi Challenge</h1>
       </div>
       <audio ref={audioRef} src={select2} />
       <audio ref={audioRefClean} src={clean} />
