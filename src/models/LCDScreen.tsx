@@ -3,7 +3,7 @@ import LCDItemScreen from "./LCDItemScreen";
 import LCDGlass from "./LCDGlass";
 import LCDMenuScreen from "./LCDMenuScreen";
 import LCDMenuScreenBottom from "./LCDMenuScreenBottom";
-import { GameConfigFull } from "../data/defaultConfig";
+import { GameConfig, GameConfigAssets } from "../data/defaultConfig";
 
 interface LCDSceenProps {
   currentAnim: string;
@@ -15,7 +15,7 @@ interface LCDSceenProps {
   isSick: boolean;
   creatureColor: number;
   screenSize: number;
-  config: GameConfigFull;
+  config: GameConfig & GameConfigAssets;
 }
 
 function LCDSceen(props: LCDSceenProps) {

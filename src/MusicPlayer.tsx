@@ -1,5 +1,4 @@
-import { ConfigurationContext } from "./App";
-import { useEffect, useRef, useContext } from "react";
+import { useEffect, useRef } from "react";
 
 interface UIProps {
   isPlaying: boolean;

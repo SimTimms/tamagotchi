@@ -1,5 +1,4 @@
 import { ConfigurationContext } from "../App";
-import { useEffect, useRef, useState } from "react";
 import MusicParticles from "./MusicParticles";
 import { Html } from "@react-three/drei";
 
