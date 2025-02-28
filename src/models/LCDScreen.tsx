@@ -3,7 +3,7 @@ import LCDItemScreen from "./LCDItemScreen";
 import LCDGlass from "./LCDGlass";
 import LCDMenuScreen from "./LCDMenuScreen";
 import LCDMenuScreenBottom from "./LCDMenuScreenBottom";
-import { GameConfigFull } from "../defaultConfig";
+import { GameConfigFull } from "../data/defaultConfig";
 
 interface LCDSceenProps {
   currentAnim: string;

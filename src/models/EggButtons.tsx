@@ -1,7 +1,6 @@
 import { GLTFLoader } from "three/examples/jsm/Addons.js";
 import { useLoader } from "@react-three/fiber";
 import EggButton from "./EggButton";
-
 interface EggButtonsProps {
   buttonOneClick: () => void;
   buttonTwoClick: () => void;

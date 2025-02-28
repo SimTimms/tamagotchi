@@ -1,6 +1,6 @@
-import { ConfigurationContext } from "./App";
+import { ConfigurationContext } from "../App";
 import { useEffect, useRef, useState } from "react";
-import Explosion from "./Explosion";
+import MusicParticles from "./MusicParticles";
 import { Html } from "@react-three/drei";
 
 interface UIProps {
@@ -35,30 +35,19 @@ export default function UI(props: UIProps) {
     autoRotate,
   } = props;
 
-  const audioRef = useRef<HTMLAudioElement>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-
-  useEffect(() => {
-    if (audioRef.current && audioRef.current.paused) {
-      if (isPlaying) {
-        audioRef.current.volume = 0.5;
-        audioRef.current.play();
-      }
-    } else if (audioRef.current && !audioRef.current.paused) {
-      if (!isPlaying) {
-        audioRef.current.pause();
-      }
-    }
-  }, [audioRef.current, isPlaying]);
   return (
     <ConfigurationContext.Consumer>
-      {({ gameConfig }) => {
+      {({ gameConfig, setGameConfig }) => {
         return (
           <>
-            {isPlaying && (
+            {gameConfig.playMusic && (
               <>
-                <Explosion texture={gameConfig.particleTextures.musicOne} />
-                <Explosion texture={gameConfig.particleTextures.musicTwo} />
+                <MusicParticles
+                  texture={gameConfig.particleTextures.musicOne}
+                />
+                <MusicParticles
+                  texture={gameConfig.particleTextures.musicTwo}
+                />
               </>
             )}
 
@@ -85,8 +74,6 @@ export default function UI(props: UIProps) {
                   <span>{happiness.toFixed(0)}</span>
                 </div>
 
-                <audio ref={audioRef} src="./dreamland.mp3" loop />
-
                 <div
                   style={{
                     position: "absolute",
@@ -101,9 +88,18 @@ export default function UI(props: UIProps) {
                 >
                   <div
                     className="ui-row-small-icon"
-                    onClick={() => setIsPlaying((isPlaying) => !isPlaying)}
+                    onClick={() =>
+                      setGameConfig((gameConfig) => {
+                        return {
+                          ...gameConfig,
+                          playMusic: !gameConfig.playMusic,
+                        };
+                      })
+                    }
                   >
-                    {`${isPlaying ? "Disable" : "Enable"}   Music by moodmode`}
+                    {`${
+                      gameConfig.playMusic ? "Disable" : "Enable"
+                    }   Music by moodmode`}
                   </div>
                   <div
                     className="ui-row-small-icon"

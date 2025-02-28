@@ -262,3 +262,22 @@
   position: relative;
 }
 
+.ui-home-button{
+  position: fixed;
+  z-index:1000;
+  background-color: red;
+
+}
+
+.select-button-label{
+  margin-top:12vh;
+  width:10vh;
+  margin-left:-5vh;
+  font-size:2vh;
+  font-family: "Darumadrop One", serif;
+  font-weight: 400;
+  font-style: normal;
+  color:#fff;
+  border: 2px dotted #fff;
+  border-radius: 1vh;
+}

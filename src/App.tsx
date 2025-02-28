@@ -1,19 +1,15 @@
 import { useEffect, useState, useRef, createContext } from "react";
-import { Canvas } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
 import "./app.css";
-import Scene from "./Scene";
 import select2 from "./assets/sounds/loop-3.mp3";
 import clean from "./assets/sounds/clean.mp3";
 import creatureAttention from "./assets/sounds/creature-attention.mp3";
-import { Environment } from "@react-three/drei";
 import { loadTextures, loadIconTextures } from "./utils/loadTextures";
-import defaultConfig, { defaultConfigStats } from "./defaultConfig";
-import { GameConfigFull } from "./defaultConfig";
-//import { Perf } from "r3f-perf";
+import defaultConfig, { defaultConfigStats } from "./data/defaultConfig";
+import { GameConfigAssets, GameConfig } from "./data/defaultConfig";
 import backgroundImage from "./assets/background.jpg";
-import * as THREE from "three";
-import LCDCreatureScreen from "./models/LCDCreatureScreen";
+import IntroScene from "./IntroScene";
+import MainScene from "./MainScene";
+import MusicPlayer from "./MusicPlayer";
 
 export const ConfigurationContext = createContext<{
   gameConfig: typeof defaultConfig;
@@ -30,11 +26,13 @@ function App() {
     new Audio(creatureAttention)
   );
 
-  const [gameConfig, setGameConfig] = useState<GameConfigFull>(defaultConfig);
+  const [gameConfig, setGameConfig] = useState<GameConfigAssets & GameConfig>(
+    defaultConfig
+  );
   const [resetState, setResetState] = useState<boolean>(false);
   const [startScreen, setStartScreen] = useState<boolean>(true);
-  const [envMap, setEnvMap] = useState<boolean>(true);
   const [autoRotate, setAutoRotate] = useState<boolean>(false);
+
   const handleReset = () => {
     setResetState(true);
     setGameConfig((gameConfig) => {
@@ -59,6 +57,10 @@ function App() {
         floorTexture,
         floorAlpha,
         playTexture,
+        rotateTexture,
+        shadowTexture,
+        sound,
+        soundOn,
       } = await loadTextures();
 
       const {
@@ -80,6 +82,7 @@ function App() {
         eggMetalTexture &&
         eggRoughTexture &&
         playTexture &&
+        rotateTexture &&
         buttonNormal
       ) {
         setGameConfig((prev) => ({
@@ -97,6 +100,10 @@ function App() {
           buttonTextures: {
             buttonNormal: buttonNormal,
             playTexture: playTexture,
+            rotateTexture: rotateTexture,
+            shadowTexture: shadowTexture,
+            sound: sound,
+            soundOn: soundOn,
           },
           particleTextures: {
             musicOne: music,
@@ -157,22 +164,16 @@ function App() {
     }));
   }, []);
 
-  const treeMaterial = new THREE.MeshStandardMaterial({
-    map: gameConfig.treeTexture,
-    transparent: true,
-    depthWrite: false,
-    opacity: 0.4,
-  });
+  function handleStart() {
+    handleReset();
+    setStartScreen(false);
+    setAutoRotate(false);
+  }
 
-  const floorMaterial = new THREE.MeshStandardMaterial({
-    map: gameConfig.floorTexture,
-    alphaMap: gameConfig.floorAlpha,
-    transparent: true,
-    opacity: 0.4,
-    depthWrite: false,
-  });
+  function setMusic() {
+    setGameConfig((prev) => ({ ...prev, playMusic: !prev.playMusic }));
+  }
 
-  const bgScale = 10;
   return (
     <div
       className="background"
@@ -189,170 +190,25 @@ function App() {
         className="canvas-scroll"
         style={{ marginLeft: startScreen ? `0` : `-100vw` }}
       >
-        <Canvas
-          className="canvas-welcome"
-          camera={{ position: [3, 3, 83.1], far: 1400 }}
-          shadows
-        >
-          <directionalLight
-            color="#fff"
-            position={[0, 2, 3]}
-            castShadow
-            intensity={10}
-          />
-          <group
-            scale={1}
-            position={[22, 5, 0]}
-            rotation={[0, -Math.PI * 0.25, 0]}
-          >
-            <LCDCreatureScreen
-              screenSize={32}
-              currentAnim={"happy"}
-              age={7}
-              creatureColor={260}
-            />
-          </group>
-          <group
-            scale={1}
-            position={[-29, 5, 0]}
-            rotation={[0, Math.PI * 0.25, 0]}
-          >
-            <LCDCreatureScreen
-              screenSize={32}
-              currentAnim={"playing"}
-              age={7}
-              creatureColor={160}
-            />
-          </group>
-          <group scale={1} position={[15, 16.7, 0]} rotation={[0, Math.PI, 0]}>
-            <LCDCreatureScreen
-              screenSize={32}
-              currentAnim={"hungry"}
-              age={7}
-              creatureColor={0}
-            />
-          </group>
-          <OrbitControls
-            enablePan={false}
-            enableZoom={false}
-            maxZoom={1}
-            minPolarAngle={Math.PI / 3}
-            maxPolarAngle={Math.PI - Math.PI / 3}
-            autoRotate={autoRotate}
-          />
-          <mesh
-            onPointerDown={() => {
-              handleReset();
-              setStartScreen(false);
-              setAutoRotate(false);
-            }}
-            onPointerOver={() => {
-              gameConfig.selectSound();
-            }}
-          >
-            <boxGeometry args={[32, 11, 2]} />
-            <meshStandardMaterial attach="material-0" transparent opacity={0} />
-            <meshStandardMaterial attach="material-1" transparent opacity={0} />
-            <meshStandardMaterial attach="material-2" transparent opacity={0} />
-            <meshStandardMaterial attach="material-3" transparent opacity={0} />
-            <meshStandardMaterial
-              map={gameConfig.buttonTextures.playTexture}
-              transparent
-              depthWrite={false}
-              attach="material-4"
-            />
-            <meshStandardMaterial
-              map={gameConfig.buttonTextures.playTexture}
-              transparent
-              depthWrite={false}
-              attach="material-5"
-            />
-          </mesh>
-        </Canvas>
+        <IntroScene
+          handleStart={handleStart}
+          playTexture={gameConfig.buttonTextures.playTexture}
+          rotateTexture={gameConfig.buttonTextures.rotateTexture}
+          shadowTexture={gameConfig.buttonTextures.shadowTexture}
+          sound={gameConfig.buttonTextures.sound}
+          soundOn={gameConfig.buttonTextures.soundOn}
+          musicOn={gameConfig.playMusic}
+          startScreen={startScreen}
+          setMusic={setMusic}
+        />
 
         <ConfigurationContext.Provider value={{ gameConfig, setGameConfig }}>
-          <Canvas
-            className="canvas"
-            camera={{ position: [3, 3, 83.1], far: 1400 }}
-            shadows
-          >
-            {/*<Perf position="top-right" />*/}
-            <group scale={50}>
-              <mesh
-                geometry={new THREE.PlaneGeometry(bgScale * 5, bgScale * 5)}
-                position={[0, -7, 0]}
-                material={floorMaterial}
-                rotation={[-Math.PI / 2, 0, 0]}
-              ></mesh>
-              <mesh
-                geometry={new THREE.BoxGeometry(0.01, 4, 4)}
-                position={[-bgScale, -3, -1]}
-                material={treeMaterial}
-              ></mesh>
-              <mesh
-                geometry={new THREE.BoxGeometry(0.01, 4, 4)}
-                position={[-bgScale, -3, -bgScale]}
-                rotation={[0, Math.PI / 1.5, 0]}
-                material={treeMaterial}
-              ></mesh>
-              <mesh
-                geometry={new THREE.BoxGeometry(0.01, 4, 4)}
-                position={[bgScale, -3, -bgScale]}
-                rotation={[0, -Math.PI / 1.5, 0]}
-                material={treeMaterial}
-              ></mesh>
-              <mesh
-                geometry={new THREE.BoxGeometry(0.01, 4, 4)}
-                position={[bgScale, -3, -1]}
-                material={treeMaterial}
-              ></mesh>
-              <mesh
-                geometry={new THREE.BoxGeometry(4, 4, 0.01)}
-                position={[0, -3, -bgScale]}
-                material={treeMaterial}
-              ></mesh>
-            </group>
-            {envMap && (
-              <Environment
-                files={[
-                  "./environment/py.png",
-                  "./environment/py.png",
-                  "./environment/py.png",
-                  "./environment/py.png",
-                  "./environment/py.png",
-                  "./environment/py.png",
-                ]}
-                blur={0.2}
-              />
-            )}
-            <ambientLight intensity={gameConfig.ambientLight} />
-            <directionalLight
-              color="#fff"
-              position={[
-                gameConfig.directionalLightX,
-                gameConfig.directionalLightY,
-                gameConfig.directionalLightZ,
-              ]}
-              castShadow
-              intensity={gameConfig.directionalLight}
-            />
-            <Scene
-              resetState={resetState}
-              setResetState={setResetState}
-              setEnvMap={setEnvMap}
-              envMap={envMap}
-              setAutoRotate={setAutoRotate}
-              autoRotate={autoRotate}
-            />
-            <OrbitControls
-              enablePan={false}
-              enableZoom={false}
-              maxZoom={1}
-              minPolarAngle={Math.PI / 3}
-              maxPolarAngle={Math.PI - Math.PI / 3}
-              autoRotate={autoRotate}
-            />
-          </Canvas>
+          <MainScene
+            resetState={resetState}
+            setResetState={setResetState}
+            autoRotate={autoRotate}
+            setAutoRotate={setAutoRotate}
+          />
         </ConfigurationContext.Provider>
       </div>
       {gameConfig.isDead && (
@@ -369,6 +225,7 @@ function App() {
         </div>
       )}
 
+      <MusicPlayer isPlaying={gameConfig.playMusic} />
       <div className="ui-right">
         <span style={{ color: "rgba(255,255,255,1)" }}>Tim Simms</span>
         <span style={{ color: "rgba(255,255,255,1)" }}>

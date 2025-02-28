@@ -18,7 +18,7 @@ import { useFrame } from "@react-three/fiber";
 import { animateCreature } from "./utils/animateCreature";
 import { screenColors } from "./utils/screenColors";
 import { ConfigurationContext } from "./App";
-import UI from "./UI";
+import UI from "./models/UI";
 
 const cleanSpeed = 25;
 const healthSpeed = 1;

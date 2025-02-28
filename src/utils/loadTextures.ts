@@ -64,6 +64,18 @@ export const loadTextures = () => {
   happy.colorSpace = THREE.SRGBColorSpace;
   const playTexture = TextureLoader.load("./textures/play.png");
   playTexture.colorSpace = THREE.SRGBColorSpace;
+  const rotateTexture = TextureLoader.load("./textures/rotate.png");
+  rotateTexture.colorSpace = THREE.SRGBColorSpace;
+  rotateTexture.minFilter = THREE.LinearFilter;
+  const shadowTexture = TextureLoader.load("./textures/shadow.png");
+  const sound = TextureLoader.load("./textures/sound.png");
+  sound.colorSpace = THREE.SRGBColorSpace;
+  sound.minFilter = THREE.NearestFilter;
+  sound.magFilter = THREE.NearestFilter;
+  const soundOn = TextureLoader.load("./textures/sound-on.png");
+  soundOn.colorSpace = THREE.SRGBColorSpace;
+  soundOn.minFilter = THREE.NearestFilter;
+  soundOn.magFilter = THREE.NearestFilter;
   return {
     eggTexture,
     eggTextureOverlay,
@@ -79,5 +91,9 @@ export const loadTextures = () => {
     floorTexture,
     playTexture,
     floorAlpha,
+    rotateTexture,
+    shadowTexture,
+    sound,
+    soundOn,
   };
 };

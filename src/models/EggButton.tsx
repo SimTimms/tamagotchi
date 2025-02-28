@@ -2,6 +2,7 @@ import * as THREE from "three";
 import gsap from "gsap";
 import { useRef, useMemo } from "react";
 import { ConfigurationContext } from "../App";
+import { Html } from "@react-three/drei";
 
 interface EggButtonProps {
   buttonClick: () => void;
@@ -11,7 +12,7 @@ interface EggButtonProps {
   color: string;
 }
 function EggButton(props: EggButtonProps) {
-  const { buttonClick, model, position } = props;
+  const { buttonClick, model, position, label } = props;
   const buttonMesh = useRef<THREE.Mesh>(null);
   const raycaster = new THREE.Raycaster();
   const rayOrigin = new THREE.Vector3(-3, 0, 0);
@@ -49,7 +50,7 @@ function EggButton(props: EggButtonProps) {
           {({ gameConfig }) => {
             return (
               <meshStandardMaterial
-                color="#222"
+                color="#444"
                 normalMap={gameConfig.buttonTextures.buttonNormal}
                 metalness={0.3}
                 roughness={1}
@@ -57,6 +58,7 @@ function EggButton(props: EggButtonProps) {
             );
           }}
         </ConfigurationContext.Consumer>
+        <Html className="select-button-label">{label}</Html>
       </mesh>
     </group>
   );
