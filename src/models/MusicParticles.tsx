@@ -19,14 +19,18 @@ const vertexShader = `
 `;
 
 const fragmentShader = `
-  precision mediump float;
-  uniform sampler2D texture1;
+precision mediump float;
+varying vec3 vColors;
+varying vec3 vColorsend;
 
-  void main() {
-    vec2 uv = gl_PointCoord.xy * 1.0 - 1.0;
-    vec4 color = texture2D(texture1, gl_PointCoord);
-    gl_FragColor = vec4(color.rgb * 1.5, color.a); // Increase brightness by multiplying RGB values
-  }
+
+void main() {
+  vec2 uv = gl_PointCoord.xy * 2.0 - 1.0;
+  float d = dot(uv, uv);
+  if (d > 1.0) discard; // Discard pixels outside the circle
+  vec3 blendedColor = mix(vColors, vColorsend, 0.75);
+  gl_FragColor = vec4(blendedColor,1.0);
+}
 `;
 interface ExplosionProps {
   texture: THREE.Texture | null;

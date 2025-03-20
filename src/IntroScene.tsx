@@ -33,6 +33,7 @@ function IntroScene(props: IntroSceneProps) {
     <Canvas
       className="canvas-welcome"
       camera={{ position: [3, 4, 83.1], far: 1400 }}
+      data-cy="intro-scene"
     >
       <directionalLight
         color="#fff"

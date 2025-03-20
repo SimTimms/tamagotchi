@@ -183,9 +183,13 @@ function App() {
         <h1 className="ui-title-text">たまごっち</h1>
         <h1 className="ui-title-text-back">Tama-not-chi Challenge</h1>
       </div>
-      <audio ref={audioRef} src={select2} />
-      <audio ref={audioRefClean} src={clean} />
-      <audio ref={creatureAttentionRef} src={creatureAttention} />
+      <audio ref={audioRef} src={select2} data-cy="audio-ref" />
+      <audio ref={audioRefClean} src={clean} data-cy="audio-clean" />
+      <audio
+        ref={creatureAttentionRef}
+        src={creatureAttention}
+        data-cy="audio-attention"
+      />
       <div
         className="canvas-scroll"
         style={{ marginLeft: startScreen ? `0` : `-100vw` }}
