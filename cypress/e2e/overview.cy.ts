@@ -16,7 +16,8 @@ context("Assertions", () => {
           `url("http://localhost:5173/src/assets/background.jpg")`
         )
         .then(($el) => {
-          const url = $el.css("background-image").match(/url\("(.*)"\)/)[1];
+          const match = $el.css("background-image").match(/url\("(.*)"\)/);
+          const url = match ? match[1] : "";
           cy.request({ url, failOnStatusCode: false })
             .its("status")
             .should("eq", 200);
